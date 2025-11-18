@@ -36,7 +36,7 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      overflow: hidden; /* Ẩn scrollbar trình duyệt ngoài */
+      overflow: hidden;
     }
 
     body {
@@ -157,14 +157,10 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-
-      /* Scroll-snap cho TikTok feed */
       scroll-snap-type: y mandatory;
       scroll-behavior: smooth;
-
-      /* Ẩn scrollbar bên trong feed (giữ scroll nhưng không thấy thanh) */
-      scrollbar-width: none;          /* Firefox */
-      -ms-overflow-style: none;       /* IE/Edge cũ */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
 
     .feed-list::-webkit-scrollbar {
@@ -176,18 +172,104 @@
       background: var(--bg-glass);
       border-radius: var(--radius-card);
       border: 1px solid var(--border-glass);
-      padding: 10px 10px 12px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.9);
-
-      /* Mỗi card = gần full màn hình feed để tạo cảm giác 1 post = 1 màn */
-      min-height: calc(100% - 12px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+      min-height: 100%;
       display: flex;
       flex-direction: column;
       scroll-snap-align: start;
       scroll-snap-stop: always;
+      position: relative;
+      padding: 10px 10px 14px;
+      overflow: hidden;
+    }
+
+    /* Nền video/ảnh full màn */
+    .feed-media {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      overflow: hidden;
+      z-index: 0;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .feed-media-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.1);
+    }
+
+    .feed-media-multi {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 3px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .feed-media-multi img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feed-media-right-col {
+      display: grid;
+      grid-template-rows: repeat(2, 1fr);
+      gap: 3px;
+    }
+
+    .feed-media-text-only {
+      width: 100%;
+      height: 100%;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 0 0, rgba(0, 255, 136, 0.25), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255, 87, 34, 0.28), transparent 55%),
+        #050505;
+      color: var(--text-main);
+    }
+
+    .feed-media-text-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .feed-media-text-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Lớp tối dưới cùng để overlay dễ đọc */
+    .feed-card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 38%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.88), transparent);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Toàn bộ nội dung nằm trên overlay */
+    .feed-card-header,
+    .feed-card-meta,
+    .feed-caption,
+    .feed-tags {
+      position: relative;
+      z-index: 2;
     }
 
     .feed-card-header {
@@ -196,6 +278,34 @@
       align-items: center;
       gap: 8px;
       flex-shrink: 0;
+    }
+
+    .feed-card-header,
+    .feed-card-meta {
+      padding-right: 44px; /* chừa chỗ cho action bar bên phải */
+    }
+
+    .feed-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .feed-card-meta-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .feed-card-meta-right {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
     }
 
     .feed-card-company {
@@ -215,6 +325,7 @@
         0 0 18px rgba(0, 255, 136, 0.4);
       overflow: hidden;
       flex-shrink: 0;
+      background: #000;
     }
 
     .company-avatar img {
@@ -277,56 +388,13 @@
       font-weight: 500;
     }
 
-    .feed-card-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      flex-shrink: 0;
-    }
-
-    .feed-card-meta-left {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-
     .pill.type-pill {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       padding: 3px 9px;
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .feed-card-meta-right {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-align: right;
-    }
-
-    /* KHU MEDIA – chiếm ~60–70% chiều cao màn hình card */
-    .feed-media {
-      margin-top: 8px;
-      border-radius: 18px;
-      overflow: hidden;
-      position: relative;
-      background: #111;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-
-      flex: 1 1 auto;           /* cho media chiếm phần lớn chiều cao */
-      min-height: 55%;          /* tạo cảm giác “TikTok video cao” */
-    }
-
-    .feed-media-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      filter: saturate(1.1);
+      background: rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 255, 255, 0.35);
     }
 
     .feed-media-tag {
@@ -343,59 +411,14 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-
-    .feed-media-multi {
-      display: grid;
-      grid-template-columns: 2fr 1.2fr;
-      gap: 3px;
-      width: 100%;
-      height: 100%;
-    }
-
-    .feed-media-multi img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .feed-media-right-col {
-      display: grid;
-      grid-template-rows: repeat(2, 1fr);
-      gap: 3px;
-    }
-
-    .feed-media-text-only {
-      width: 100%;
-      height: 100%;
-      padding: 16px 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      background:
-        radial-gradient(circle at 0 0, rgba(0, 255, 136, 0.25), transparent 55%),
-        radial-gradient(circle at 100% 100%, rgba(255, 87, 34, 0.28), transparent 55%),
-        #050505;
-    }
-
-    .feed-media-text-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .feed-media-text-body {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.6;
+      z-index: 2;
     }
 
     .feed-caption {
       font-size: 13px;
       line-height: 1.55;
-      margin-top: 8px;
-      flex-shrink: 0;
+      margin-top: auto; /* đẩy caption xuống đáy */
+      padding-right: 44px;
     }
 
     .feed-tags {
@@ -403,6 +426,7 @@
       flex-wrap: wrap;
       gap: 6px;
       margin-top: 6px;
+      padding-right: 44px;
       flex-shrink: 0;
     }
 
@@ -416,33 +440,7 @@
     }
 
     .feed-footer {
-      margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      color: var(--text-muted);
-      flex-shrink: 0;
-    }
-
-    .feed-footer-left {
-      display: flex;
-      gap: 8px;
-    }
-
-    .feed-footer-left span {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .feed-footer-right {
-      font-size: 11px;
-      text-align: right;
-    }
-
-    .feed-footer-right span {
-      color: var(--neon-green);
+      display: none; /* Ẩn phần like/comment cũ để không trùng với action bar */
     }
 
     .text-strong {
@@ -452,6 +450,58 @@
     .text-orange {
       color: var(--accent-orange);
     }
+
+    /* ACTION BAR TIKTOK BÊN PHẢI */
+    .feed-action-bar {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .feed-action-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .feed-action-button {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .feed-action-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* CARD TEXT-ONLY (KHÔNG ẢNH/VIDEO) */
+    .feed-card.text-only {
+      background:
+        radial-gradient(circle at 0 0, rgba(0, 255, 136, 0.25), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255, 87, 34, 0.28), transparent 55%),
+        #050505;
+    }
+
+    .feed-card.text-only::after {
+      /* nhẹ overlay để vẫn đọc tốt */
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+    }
+
   </style>
 </head>
 <body>
@@ -465,7 +515,7 @@
             <div class="header-title">Trang chủ</div>
             <div class="header-pill">Dành cho ứng viên</div>
           </div>
-          <div class="header-sub">1 post = 1 màn • Vuốt dọc để khám phá</div>
+          <div class="header-sub">Vuốt dọc để khám phá doanh nghiệp thật</div>
         </div>
         <div class="header-right">
           Hôm nay • <span>14 đề xuất mới</span><br>
@@ -476,6 +526,11 @@
       <div class="feed-list">
         <!-- POST 01 - VIDEO VĂN PHÒNG FULL ẢNH -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg" alt="Văn phòng GIMO">
+            <div class="feed-media-tag">Tour một vòng văn phòng tối giản, đầy cây xanh</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -491,6 +546,7 @@
             </div>
             <div class="pill neon">Đã xác thực</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Video văn phòng</div>
@@ -498,10 +554,7 @@
             </div>
             <div class="feed-card-meta-right">3.2k lượt xem</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg" alt="Văn phòng GIMO">
-            <div class="feed-media-tag">Tour một vòng văn phòng tối giản, đầy cây xanh</div>
-          </div>
+
           <div class="feed-caption">
             Thưởng Tết <span class="text-strong">3 tháng</span> + du lịch Hàn Quốc cho cả team. Mỗi quý có mini-retreat 3 ngày để toàn bộ công ty nhìn lại OKR &amp; ăn chơi có kiểm soát 😄
           </div>
@@ -510,17 +563,34 @@
             <div class="feed-tag">#KhôngOTCuốiTuần</div>
             <div class="feed-tag">#Fintech</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 1.2k</span>
-              <span>💬 87</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right">Xem thêm video của GIMO →</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 02 - ẢNH TEAMBUILDING -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg" alt="Teambuilding Base">
+            <div class="feed-media-tag">3 ngày 2 đêm “làm hết mình, chơi hết sức”</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -536,6 +606,7 @@
             </div>
             <div class="pill">Đang mời nhân viên xác thực</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Ảnh teambuilding</div>
@@ -543,10 +614,7 @@
             </div>
             <div class="feed-card-meta-right">Hôm qua</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg" alt="Teambuilding Base">
-            <div class="feed-media-tag">3 ngày 2 đêm “làm hết mình, chơi hết sức”</div>
-          </div>
+
           <div class="feed-caption">
             Company Trip Q1/2026: không check mail, không nói chuyện KPI, chỉ nói chuyện ước mơ. Mỗi thành viên được chia sẻ plan cá nhân 1 năm tới.
           </div>
@@ -555,17 +623,40 @@
             <div class="feed-tag">#ĐàLạt</div>
             <div class="feed-tag">#BaseLife</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 986</span>
-              <span>💬 54</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>32</span> nhân viên đã xác thực chuyến đi này</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 03 - ALBUM 3 ẢNH VĂN PHÒNG -->
         <div class="feed-card">
+          <div class="feed-media">
+            <div class="feed-media-multi">
+              <img src="https://images.pexels.com/photos/1181355/pexels-photo-1181355.jpeg" alt="Không gian mở">
+              <div class="feed-media-right-col">
+                <img src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg" alt="Phòng họp">
+                <img src="https://images.pexels.com/photos/1181562/pexels-photo-1181562.jpeg" alt="Khu relax">
+              </div>
+            </div>
+            <div class="feed-media-tag">Khu focus • phòng brainstorm • góc chill (+9 ảnh nữa)</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -581,6 +672,7 @@
             </div>
             <div class="pill neon">Văn hóa mở</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Album ảnh</div>
@@ -588,16 +680,7 @@
             </div>
             <div class="feed-card-meta-right">“Một ngày ở TopCV Studio”</div>
           </div>
-          <div class="feed-media">
-            <div class="feed-media-multi">
-              <img src="https://images.pexels.com/photos/1181355/pexels-photo-1181355.jpeg" alt="Không gian mở">
-              <div class="feed-media-right-col">
-                <img src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg" alt="Phòng họp">
-                <img src="https://images.pexels.com/photos/1181562/pexels-photo-1181562.jpeg" alt="Khu relax">
-              </div>
-            </div>
-            <div class="feed-media-tag">Khu focus • phòng brainstorm • góc chill (+9 ảnh nữa)</div>
-          </div>
+
           <div class="feed-caption">
             Nguyên tắc: không ép ai “vui vẻ”, văn phòng chỉ tạo điều kiện để mọi người dễ trò chuyện, dễ tập trung và dễ nghỉ ngơi hơn.
           </div>
@@ -606,17 +689,38 @@
             <div class="feed-tag">#FocusRoom</div>
             <div class="feed-tag">#KhôngDrama</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 712</span>
-              <span>💬 23</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right">Xem 9 ảnh khác →</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
-        <!-- POST 04 - STORY TEXT CEO -->
+        <!-- POST 04 - STORY TEXT CEO (DÙNG MEDIA TEXT-ONLY) -->
         <div class="feed-card">
+          <div class="feed-media">
+            <div class="feed-media-text-only">
+              <div class="feed-media-text-title">“Không nhận những job khiến team kiệt sức”</div>
+              <div class="feed-media-text-body">
+                “Từ 2026, chúng tôi từ chối các campaign yêu cầu OT triền miên, brief qua loa và thiếu tôn trọng đội ngũ. Doanh thu có thể giảm, nhưng sức khỏe tinh thần của team phải được bảo vệ trước.”
+              </div>
+            </div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -632,6 +736,7 @@
             </div>
             <div class="pill">CEO lên tiếng</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Story text</div>
@@ -639,14 +744,7 @@
             </div>
             <div class="feed-card-meta-right">Đăng bởi CEO</div>
           </div>
-          <div class="feed-media">
-            <div class="feed-media-text-only">
-              <div class="feed-media-text-title">“Không nhận những job khiến team kiệt sức”</div>
-              <div class="feed-media-text-body">
-                “Từ 2026, chúng tôi từ chối các campaign yêu cầu OT triền miên, brief qua loa và thiếu tôn trọng đội ngũ. Doanh thu có thể giảm, nhưng sức khỏe tinh thần của team phải được bảo vệ trước.”
-              </div>
-            </div>
-          </div>
+
           <div class="feed-caption">
             Bài viết này được <span class="text-strong">28/32</span> nhân viên account xác nhận là đúng với thực tế vận hành trong 6 tháng qua.
           </div>
@@ -654,17 +752,34 @@
             <div class="feed-tag">#AgencyLife</div>
             <div class="feed-tag">#SayNoToToxic</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 1.8k</span>
-              <span>💬 210</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>87%</span> nhân viên đồng ý</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 05 - VIDEO HỌC TẬP -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg" alt="Workshop MindX">
+            <div class="feed-media-tag">Workshop “Cãi sếp cho đúng cách” mỗi tháng 1 lần</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -680,6 +795,7 @@
             </div>
             <div class="pill neon">Culture of Learning</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Video workshop</div>
@@ -687,10 +803,7 @@
             </div>
             <div class="feed-card-meta-right">Đăng bởi HR</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg" alt="Workshop MindX">
-            <div class="feed-media-tag">Workshop “Cãi sếp cho đúng cách” mỗi tháng 1 lần</div>
-          </div>
+
           <div class="feed-caption">
             Mọi nhân viên mới đều được tham gia workshop về giao tiếp &amp; feedback. Rule: <span class="text-strong">“Phản biện mạnh, tôn trọng cao”</span>.
           </div>
@@ -698,17 +811,40 @@
             <div class="feed-tag">#LearningCulture</div>
             <div class="feed-tag">#Feedback</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 643</span>
-              <span>💬 29</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right">“Cãi sếp mà không sợ” trend ↑</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 06 - ALBUM CSR -->
         <div class="feed-card">
+          <div class="feed-media">
+            <div class="feed-media-multi">
+              <img src="https://images.pexels.com/photos/6646901/pexels-photo-6646901.jpeg" alt="CSR 1">
+              <div class="feed-media-right-col">
+                <img src="https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg" alt="CSR 2">
+                <img src="https://images.pexels.com/photos/6647012/pexels-photo-6647012.jpeg" alt="CSR 3">
+              </div>
+            </div>
+            <div class="feed-media-tag">Team dọn rác bãi biển Sơn Trà (+2 ảnh nữa)</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -724,6 +860,7 @@
             </div>
             <div class="pill">Cam kết bền vững</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Album CSR</div>
@@ -731,16 +868,7 @@
             </div>
             <div class="feed-card-meta-right">Thứ 7, tuần rồi</div>
           </div>
-          <div class="feed-media">
-            <div class="feed-media-multi">
-              <img src="https://images.pexels.com/photos/6646901/pexels-photo-6646901.jpeg" alt="CSR 1">
-              <div class="feed-media-right-col">
-                <img src="https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg" alt="CSR 2">
-                <img src="https://images.pexels.com/photos/6647012/pexels-photo-6647012.jpeg" alt="CSR 3">
-              </div>
-            </div>
-            <div class="feed-media-tag">Team dọn rác bãi biển Sơn Trà (+2 ảnh nữa)</div>
-          </div>
+
           <div class="feed-caption">
             Mỗi quý, toàn công ty dành 1 ngày cuối tuần cho hoạt động cộng đồng. Tháng này: bãi biển sạch hơn, team cũng gần nhau hơn.
           </div>
@@ -748,17 +876,29 @@
             <div class="feed-tag">#CSR</div>
             <div class="feed-tag">#XanhHoá</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 432</span>
-              <span>💬 18</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>67%</span> nhân viên tham gia</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
-        <!-- POST 07 - TEXT THREAD “CHUYỆN THẬT” -->
-        <div class="feed-card">
+        <!-- POST 07 - TEXT THREAD “CHUYỆN THẬT” (TEXT ONLY CARD) -->
+        <div class="feed-card text-only">
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -774,6 +914,7 @@
             </div>
             <div class="pill">Nhân viên kể</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Story text</div>
@@ -781,6 +922,7 @@
             </div>
             <div class="feed-card-meta-right">Đăng bởi Dev Senior</div>
           </div>
+
           <div class="feed-caption">
             “Ngày mình bị burnout và cách team lead xử lý” — một câu chuyện thật về việc tạm dừng project 1 tuần để cả team cùng reset, không ai bị xem là “yếu kém” vì dám nói mệt.
           </div>
@@ -788,17 +930,34 @@
             <div class="feed-tag">#Burnout</div>
             <div class="feed-tag">#PsychologicalSafety</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 1.1k</span>
-              <span>💬 132</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>24</span> phản hồi tương tự từ nhân viên khác</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 08 - ẢNH GIỜ TRÀ CHIỀU -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184198/pexels-photo-3184198.jpeg" alt="Tea break">
+            <div class="feed-media-tag">15:30 thứ 6: không meeting, chỉ trà sữa &amp; board game</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -814,6 +973,7 @@
             </div>
             <div class="pill orange">Giờ tea-break</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Ảnh đời sống</div>
@@ -821,10 +981,7 @@
             </div>
             <div class="feed-card-meta-right">Hôm nay</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/3184198/pexels-photo-3184198.jpeg" alt="Tea break">
-            <div class="feed-media-tag">15:30 thứ 6: không meeting, chỉ trà sữa &amp; board game</div>
-          </div>
+
           <div class="feed-caption">
             Tea-break là lịch cố định, không bị “lấy mất” vì họp gấp. Ai họp giờ này thì auto được dời lịch.
           </div>
@@ -832,17 +989,34 @@
             <div class="feed-tag">#TeaBreak</div>
             <div class="feed-tag">#NoMeetingFriday</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 389</span>
-              <span>💬 17</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>73%</span> nhân viên tham gia đều đặn</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 09 - VIDEO HỌP OKR -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/1181395/pexels-photo-1181395.jpeg" alt="Họp OKR">
+            <div class="feed-media-tag">Toàn công ty cùng vote OKR quan trọng nhất</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -858,6 +1032,7 @@
             </div>
             <div class="pill neon">Minh bạch mục tiêu</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Video họp</div>
@@ -865,10 +1040,7 @@
             </div>
             <div class="feed-card-meta-right">Mở OKR Q2/2026</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/1181395/pexels-photo-1181395.jpeg" alt="Họp OKR">
-            <div class="feed-media-tag">Toàn công ty cùng vote OKR quan trọng nhất</div>
-          </div>
+
           <div class="feed-caption">
             Mọi người đều thấy rõ công ty đang đi đâu, ai đóng góp điều gì. Không có OKR “trên trời” đẩy xuống.
           </div>
@@ -876,17 +1048,29 @@
             <div class="feed-tag">#OKR</div>
             <div class="feed-tag">#Transparency</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 522</span>
-              <span>💬 34</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>96%</span> nhân viên tham dự</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
-        <!-- POST 10 - TEXT CAM KẾT THƯỞNG TẾT -->
-        <div class="feed-card">
+        <!-- POST 10 - TEXT CAM KẾT THƯỞNG TẾT (TEXT ONLY) -->
+        <div class="feed-card text-only">
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -902,6 +1086,7 @@
             </div>
             <div class="pill">Cam kết thưởng Tết</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Post text</div>
@@ -909,6 +1094,7 @@
             </div>
             <div class="feed-card-meta-right">02/12/2025</div>
           </div>
+
           <div class="feed-caption">
             Năm 2026, JoyRetail cam kết: thưởng Tết tối thiểu <span class="text-strong">1.5 tháng lương</span>, tối đa 3 tháng cho team đạt từ 100% KPI. Cam kết này đã được gửi email tới <span class="text-strong">92%</span> nhân viên toàn hệ thống.
           </div>
@@ -916,17 +1102,40 @@
             <div class="feed-tag">#ThưởngTết</div>
             <div class="feed-tag">#Retail</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 604</span>
-              <span>💬 47</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>68%</span> nhân viên đã xác thực đúng năm 2025</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 11 - ALBUM WORK FROM HOME -->
         <div class="feed-card">
+          <div class="feed-media">
+            <div class="feed-media-multi">
+              <img src="https://images.pexels.com/photos/1181243/pexels-photo-1181243.jpeg" alt="WFH 1">
+              <div class="feed-media-right-col">
+                <img src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg" alt="WFH 2">
+                <img src="https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg" alt="WFH 3">
+              </div>
+            </div>
+            <div class="feed-media-tag">Góc làm việc tại nhà của team Remote Friends</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -942,6 +1151,7 @@
             </div>
             <div class="pill">WFH thật sự</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Album WFH</div>
@@ -949,16 +1159,7 @@
             </div>
             <div class="feed-card-meta-right">Thứ 4</div>
           </div>
-          <div class="feed-media">
-            <div class="feed-media-multi">
-              <img src="https://images.pexels.com/photos/1181243/pexels-photo-1181243.jpeg" alt="WFH 1">
-              <div class="feed-media-right-col">
-                <img src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg" alt="WFH 2">
-                <img src="https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg" alt="WFH 3">
-              </div>
-            </div>
-            <div class="feed-media-tag">Góc làm việc tại nhà của team Remote Friends</div>
-          </div>
+
           <div class="feed-caption">
             Chính sách WFH 3/5 ngày, không yêu cầu mở cam nếu không cần. Quan trọng là output rõ ràng, không phải online “cho có mặt”.
           </div>
@@ -966,17 +1167,34 @@
             <div class="feed-tag">#WFH</div>
             <div class="feed-tag">#AsyncWork</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 455</span>
-              <span>💬 21</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>79%</span> nhân viên chọn WFH ≥ 2 ngày/tuần</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 12 - VIDEO ONBOARDING -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/1181605/pexels-photo-1181605.jpeg" alt="Onboarding">
+            <div class="feed-media-tag">Tuần đầu: không giao KPI nặng, chỉ học &amp; shadow</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -992,6 +1210,7 @@
             </div>
             <div class="pill">Onboarding rõ ràng</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Video onboarding</div>
@@ -999,10 +1218,7 @@
             </div>
             <div class="feed-card-meta-right">Guideline cho nhân viên mới</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/1181605/pexels-photo-1181605.jpeg" alt="Onboarding">
-            <div class="feed-media-tag">Tuần đầu: không giao KPI nặng, chỉ học &amp; shadow</div>
-          </div>
+
           <div class="feed-caption">
             Mọi nhân viên đều có buddy đi kèm 30 ngày đầu. Không ai phải “tự bơi” trong mớ tool &amp; quy trình.
           </div>
@@ -1010,17 +1226,29 @@
             <div class="feed-tag">#Onboarding</div>
             <div class="feed-tag">#BuddySystem</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 321</span>
-              <span>💬 14</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>91%</span> nhân viên mới đánh giá 5★</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
-        <!-- POST 13 - BÀI POST HỎI ĐÁP Q&A -->
-        <div class="feed-card">
+        <!-- POST 13 - Q&A VỚI HR (TEXT ONLY) -->
+        <div class="feed-card text-only">
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -1036,6 +1264,7 @@
             </div>
             <div class="pill">Ask me anything</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Q&amp;A với HR</div>
@@ -1043,6 +1272,7 @@
             </div>
             <div class="feed-card-meta-right">Thứ 5 hàng tuần</div>
           </div>
+
           <div class="feed-caption">
             Mỗi tuần, HR mở 1 thread Q&amp;A công khai: ứng viên hỏi gì cũng trả lời — từ lương, OT, drama cho đến chính sách nghỉ phép.
           </div>
@@ -1050,17 +1280,34 @@
             <div class="feed-tag">#AMA</div>
             <div class="feed-tag">#HRTransparent</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 274</span>
-              <span>💬 63</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right">Xem những câu hỏi nổi bật →</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 14 - ẢNH SỰ KIỆN 8/3 -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg" alt="Sự kiện 8/3">
+            <div class="feed-media-tag">Talkshow “Phụ nữ trong ngành tech”</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -1076,6 +1323,7 @@
             </div>
             <div class="pill">Tôn vinh phụ nữ</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Ảnh sự kiện</div>
@@ -1083,10 +1331,7 @@
             </div>
             <div class="feed-card-meta-right">Năm 2026</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg" alt="Sự kiện 8/3">
-            <div class="feed-media-tag">Talkshow “Phụ nữ trong ngành tech”</div>
-          </div>
+
           <div class="feed-caption">
             Không chỉ tặng quà, HerTech dành cả buổi chiều để lắng nghe câu chuyện thật của các chị em dev, tester, PM.
           </div>
@@ -1094,17 +1339,29 @@
             <div class="feed-tag">#WomenInTech</div>
             <div class="feed-tag">#Diversity</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 501</span>
-              <span>💬 39</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>64%</span> nhân sự là nữ</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
-        <!-- POST 15 - LONGFORM STORY TELLING -->
-        <div class="feed-card">
+        <!-- POST 15 - LONGFORM STORY TELLING (TEXT ONLY) -->
+        <div class="feed-card text-only">
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -1120,6 +1377,7 @@
             </div>
             <div class="pill">Story dài</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Bài viết dài</div>
@@ -1127,6 +1385,7 @@
             </div>
             <div class="feed-card-meta-right">Viết bởi Content Lead</div>
           </div>
+
           <div class="feed-caption">
             “5 lần chúng tôi thất bại khi cố xây văn hóa đọc trong công ty” — bài viết kể chi tiết từ lần mua sách bừa bãi cho đến khi xây được club đọc sách thật sự sống.
           </div>
@@ -1134,17 +1393,34 @@
             <div class="feed-tag">#StoryTelling</div>
             <div class="feed-tag">#CultureBuilding</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 342</span>
-              <span>💬 27</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right">Xem bản đầy đủ trên trang công ty</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 16 - ẢNH PRODUCT LAUNCH -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg" alt="Product Launch">
+            <div class="feed-media-tag">Nhân viên là người thử món đầu tiên</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -1160,6 +1436,7 @@
             </div>
             <div class="pill">Ra mắt sản phẩm</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Ảnh launch</div>
@@ -1167,10 +1444,7 @@
             </div>
             <div class="feed-card-meta-right">Tháng 1/2026</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg" alt="Product Launch">
-            <div class="feed-media-tag">Nhân viên là người thử món đầu tiên</div>
-          </div>
+
           <div class="feed-caption">
             Trước khi bán cho khách, toàn bộ menu mới phải qua vòng “chấm điểm khó tính” của nhân viên nội bộ.
           </div>
@@ -1178,17 +1452,40 @@
             <div class="feed-tag">#F&amp;B</div>
             <div class="feed-tag">#InternalTesting</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 289</span>
-              <span>💬 19</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>4.9/5★</span> điểm nội bộ</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 17 - ALBUM RETREAT NỘI BỘ -->
         <div class="feed-card">
+          <div class="feed-media">
+            <div class="feed-media-multi">
+              <img src="https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg" alt="Retreat 1">
+              <div class="feed-media-right-col">
+                <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg" alt="Retreat 2">
+                <img src="https://images.pexels.com/photos/3184395/pexels-photo-3184395.jpeg" alt="Retreat 3">
+              </div>
+            </div>
+            <div class="feed-media-tag">2 ngày 1 đêm để chỉ nói về chiến lược &amp; con người</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -1204,6 +1501,7 @@
             </div>
             <div class="pill">Leadership retreat</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Album retreat</div>
@@ -1211,16 +1509,7 @@
             </div>
             <div class="feed-card-meta-right">Ninh Bình</div>
           </div>
-          <div class="feed-media">
-            <div class="feed-media-multi">
-              <img src="https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg" alt="Retreat 1">
-              <div class="feed-media-right-col">
-                <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg" alt="Retreat 2">
-                <img src="https://images.pexels.com/photos/3184395/pexels-photo-3184395.jpeg" alt="Retreat 3">
-              </div>
-            </div>
-            <div class="feed-media-tag">2 ngày 1 đêm để chỉ nói về chiến lược &amp; con người</div>
-          </div>
+
           <div class="feed-caption">
             Mỗi leader phải trả lời 1 câu: “Nếu team bạn rời đi đồng loạt, lý do lớn nhất sẽ là gì?”
           </div>
@@ -1228,17 +1517,29 @@
             <div class="feed-tag">#Leadership</div>
             <div class="feed-tag">#Retreat</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 312</span>
-              <span>💬 15</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right">Xem các câu trả lời ẩn danh →</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
-        <!-- POST 18 - TEXT FEEDBACK ẨN DANH TỔNG HỢP -->
-        <div class="feed-card">
+        <!-- POST 18 - TEXT FEEDBACK ẨN DANH (TEXT ONLY) -->
+        <div class="feed-card text-only">
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -1254,6 +1555,7 @@
             </div>
             <div class="pill">Feedback ẩn danh</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Tổng hợp feedback</div>
@@ -1261,6 +1563,7 @@
             </div>
             <div class="feed-card-meta-right">Công khai</div>
           </div>
+
           <div class="feed-caption">
             Top 3 điều nhân viên muốn cải thiện: (1) Bớt họp dài, (2) Thêm budget đào tạo, (3) Minh bạch hơn về lộ trình lương. Ban lãnh đạo đã cam kết address từng mục trong 3 tháng tới.
           </div>
@@ -1268,17 +1571,34 @@
             <div class="feed-tag">#AnonymousFeedback</div>
             <div class="feed-tag">#ActionPlan</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 401</span>
-              <span>💬 33</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>72%</span> nhân viên tham gia survey</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
         <!-- POST 19 - ẢNH BUỔI REVIEW LƯƠNG -->
         <div class="feed-card">
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184288/pexels-photo-3184288.jpeg" alt="Salary review">
+            <div class="feed-media-tag">Manager &amp; nhân viên cùng ngồi review lộ trình 12 tháng</div>
+          </div>
+
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -1294,6 +1614,7 @@
             </div>
             <div class="pill neon">Lương minh bạch</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Ảnh session</div>
@@ -1301,10 +1622,7 @@
             </div>
             <div class="feed-card-meta-right">6 tháng/lần</div>
           </div>
-          <div class="feed-media">
-            <img class="feed-media-image" src="https://images.pexels.com/photos/3184288/pexels-photo-3184288.jpeg" alt="Salary review">
-            <div class="feed-media-tag">Manager &amp; nhân viên cùng ngồi review lộ trình 12 tháng</div>
-          </div>
+
           <div class="feed-caption">
             100% nhân viên được biết rõ cách tính lương &amp; bonus, không có khoản “mập mờ”.
           </div>
@@ -1312,17 +1630,29 @@
             <div class="feed-tag">#SalaryReview</div>
             <div class="feed-tag">#Transparency</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 378</span>
-              <span>💬 22</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right"><span>89%</span> hài lòng với buổi review gần nhất</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
-        <!-- POST 20 - TEXT “MỘT NGÀY LÀM VIỆC” -->
-        <div class="feed-card">
+        <!-- POST 20 - “MỘT NGÀY LÀM VIỆC” TEMPLATE (TEXT ONLY) -->
+        <div class="feed-card text-only">
           <div class="feed-card-header">
             <div class="feed-card-company">
               <div class="company-avatar">
@@ -1338,6 +1668,7 @@
             </div>
             <div class="pill">Demo cho SME</div>
           </div>
+
           <div class="feed-card-meta">
             <div class="feed-card-meta-left">
               <div class="pill type-pill">Mẫu post gợi ý</div>
@@ -1345,6 +1676,7 @@
             </div>
             <div class="feed-card-meta-right">Gợi ý từ JoyWork</div>
           </div>
+
           <div class="feed-caption">
             Gợi ý cho các SME mới lên JoyWork: hãy thử kể lại <span class="text-strong">một ngày làm việc điển hình</span> của 1 vị trí chủ chốt (Sales, CS, Dev, Kế toán...). Càng cụ thể càng tốt: giờ bắt đầu, họp mấy lần, dùng tool gì, áp lực ra sao, support từ sếp &amp; team thế nào.
           </div>
@@ -1352,12 +1684,24 @@
             <div class="feed-tag">#JoyWorkTemplate</div>
             <div class="feed-tag">#ShowDontTell</div>
           </div>
-          <div class="feed-footer">
-            <div class="feed-footer-left">
-              <span>❤️ 999+</span>
-              <span>💬 0</span>
+
+          <div class="feed-action-bar">
+            <div class="feed-action-item">
+              <div class="feed-action-button">❤️</div>
+              <div class="feed-action-label">Tim</div>
             </div>
-            <div class="feed-footer-right">Dùng mẫu này để bắt đầu kể câu chuyện của bạn</div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">📤</div>
+              <div class="feed-action-label">Chia sẻ</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💾</div>
+              <div class="feed-action-label">Lưu</div>
+            </div>
+            <div class="feed-action-item">
+              <div class="feed-action-button">💬</div>
+              <div class="feed-action-label">Chat DN</div>
+            </div>
           </div>
         </div>
 
