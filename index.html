@@ -1,1868 +1,1368 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>John Academy - WorkMatch Company Profile</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #ff6b35;
-            --primary-dark: #e85a2a;
-            --primary-light: #ff8456;
-            --dark: #0a0a0a;
-            --dark-secondary: #1a1a1a;
-            --dark-card: #141414;
-            --white: #ffffff;
-            --gray: #888888;
-            --gray-light: #f5f5f5;
-            --gray-border: #2a2a2a;
-            --success: #10b981;
-            --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #ff8456 100%);
-            --gradient-dark: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
-            --shadow-xl: 0 20px 40px rgba(0,0,0,0.15);
-            --shadow-glow: 0 0 40px rgba(255, 107, 53, 0.3);
-            --radius: 16px;
-            --radius-lg: 24px;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #000000;
-            color: var(--white);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Animated Background */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(255, 132, 86, 0.08) 0%, transparent 50%),
-                        radial-gradient(circle at 40% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
-            z-index: -1;
-            animation: floatGradient 20s ease infinite;
-        }
-
-        @keyframes floatGradient {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            33% { transform: scale(1.1) rotate(120deg); }
-            66% { transform: scale(0.95) rotate(240deg); }
-        }
-
-        /* Modern Navigation */
-        .navbar {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--gray-border);
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 0.75rem 0;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 1.75rem;
-            font-weight: 900;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            letter-spacing: -0.5px;
-        }
-
-        .logo::before {
-            content: "🚀";
-            font-size: 1.5rem;
-            -webkit-text-fill-color: initial;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            list-style: none;
-        }
-
-        .nav-link {
-            color: var(--gray);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1.25rem;
-            border-radius: 100px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.95rem;
-        }
-
-        .nav-link:hover {
-            color: var(--white);
-            background: rgba(255, 107, 53, 0.1);
-        }
-
-        .nav-link.active {
-            color: var(--white);
-            background: var(--gradient-primary);
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.75rem 1.75rem;
-            border-radius: 100px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: var(--white);
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
-        }
-
-        .btn-glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            color: var(--white);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-glass:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Main Container */
-        .main-container {
-            max-width: 1400px;
-            margin: 5rem auto 2rem;
-            padding: 0 2rem;
-        }
-
-        /* Company Hero Section */
-        .company-hero {
-            position: relative;
-            height: 500px;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-bottom: 2rem;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
-        }
-
-        .hero-video-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.4;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.95) 100%);
-            display: flex;
-            align-items: flex-end;
-            padding: 3rem;
-        }
-
-        .hero-content {
-            display: flex;
-            align-items: flex-end;
-            gap: 2.5rem;
-            width: 100%;
-        }
-
-        .company-logo-xl {
-            width: 140px;
-            height: 140px;
-            border-radius: var(--radius-lg);
-            background: linear-gradient(135deg, #ff6b35, #ff9558);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3.5rem;
-            font-weight: 900;
-            color: var(--white);
-            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.3);
-            position: relative;
-        }
-
-        .company-logo-xl::after {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: var(--radius-lg);
-            padding: 2px;
-            background: linear-gradient(135deg, #ff6b35, #ff9558);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0.5;
-        }
-
-        .hero-info {
-            flex: 1;
-        }
-
-        .company-name-xl {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--white) 0%, #cccccc 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .company-tagline-xl {
-            font-size: 1.35rem;
-            color: #cccccc;
-            margin-bottom: 2rem;
-            font-weight: 300;
-        }
-
-        .hero-stats {
-            display: flex;
-            gap: 3rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .stat-label {
-            color: var(--gray);
-            font-size: 0.95rem;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Tab Navigation */
-        .tab-nav {
-            display: flex;
-            gap: 0.5rem;
-            background: var(--dark-card);
-            padding: 0.5rem;
-            border-radius: var(--radius);
-            margin-bottom: 2rem;
-            overflow-x: auto;
-            border: 1px solid var(--gray-border);
-        }
-
-        .tab-btn {
-            padding: 0.75rem 1.5rem;
-            background: transparent;
-            border: none;
-            color: var(--gray);
-            font-weight: 600;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .tab-btn:hover {
-            color: var(--white);
-            background: rgba(255, 107, 53, 0.1);
-        }
-
-        .tab-btn.active {
-            background: var(--gradient-primary);
-            color: var(--white);
-        }
-
-        /* Content Sections */
-        .section-card {
-            background: var(--dark-card);
-            border: 1px solid var(--gray-border);
-            border-radius: var(--radius-lg);
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .section-title {
-            font-size: 1.75rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        /* Core Values Grid */
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .value-card {
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 132, 86, 0.02) 100%);
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            border-radius: var(--radius);
-            padding: 1.75rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .value-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--gradient-primary);
-        }
-
-        .value-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(255, 107, 53, 0.15);
-            border-color: var(--primary);
-        }
-
-        .value-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .value-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            color: var(--white);
-        }
-
-        .value-description {
-            color: #cccccc;
-            line-height: 1.6;
-        }
-
-        /* Culture Score */
-        .culture-viz {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .chart-container {
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .culture-metrics {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .metric-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.25rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: var(--radius);
-            border: 1px solid var(--gray-border);
-            transition: all 0.3s;
-        }
-
-        .metric-item:hover {
-            background: rgba(255, 107, 53, 0.05);
-            border-color: rgba(255, 107, 53, 0.3);
-            transform: translateX(4px);
-        }
-
-        .metric-score {
-            font-size: 2rem;
-            font-weight: 900;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            min-width: 60px;
-            text-align: center;
-        }
-
-        .metric-info {
-            flex: 1;
-        }
-
-        .metric-name {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .metric-bar {
-            height: 6px;
-            background: var(--gray-border);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .metric-fill {
-            height: 100%;
-            background: var(--gradient-primary);
-            border-radius: 3px;
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Video Gallery */
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .video-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--gray-border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .video-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
-            border-color: var(--primary);
-        }
-
-        .video-thumbnail {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .video-thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .video-card:hover .video-thumbnail img {
-            transform: scale(1.05);
-        }
-
-        .video-play-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
-        }
-
-        .video-card:hover .video-play-overlay {
-            background: rgba(0,0,0,0.6);
-        }
-
-        .play-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 107, 53, 0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--white);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-        }
-
-        .video-card:hover .play-icon {
-            transform: scale(1.1);
-            background: var(--primary);
-        }
-
-        .video-info {
-            padding: 1.25rem;
-        }
-
-        .video-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--white);
-        }
-
-        .video-meta {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        /* Team Section */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .team-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--gray-border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .team-card:hover {
-            background: rgba(255, 107, 53, 0.05);
-            border-color: rgba(255, 107, 53, 0.3);
-            transform: translateY(-4px);
-        }
-
-        .team-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            object-fit: cover;
-            border: 3px solid var(--primary);
-        }
-
-        .team-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .team-role {
-            color: var(--primary);
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-        }
-
-        .team-bio {
-            color: #cccccc;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* Job Listings */
-        .job-list {
-            display: grid;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .job-item {
-            background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, transparent 100%);
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .job-item:hover {
-            transform: translateX(8px);
-            box-shadow: 0 8px 16px rgba(255, 107, 53, 0.15);
-            border-color: var(--primary);
-        }
-
-        .job-details {
-            flex: 1;
-        }
-
-        .job-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .job-meta {
-            display: flex;
-            gap: 1.5rem;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .job-meta span {
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-        }
-
-        .job-salary {
-            background: var(--gradient-primary);
-            color: var(--white);
-            padding: 0.5rem 1.25rem;
-            border-radius: 100px;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        /* Employee Stories */
-        .story-carousel {
-            display: flex;
-            gap: 1.5rem;
-            overflow-x: auto;
-            padding: 1rem 0;
-            scrollbar-width: none;
-        }
-
-        .story-carousel::-webkit-scrollbar {
-            display: none;
-        }
-
-        .story-card {
-            min-width: 350px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--gray-border);
-            border-radius: var(--radius);
-            padding: 1.75rem;
-            transition: all 0.3s;
-        }
-
-        .story-card:hover {
-            transform: scale(1.02);
-            border-color: var(--primary);
-        }
-
-        .story-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .story-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .story-author {
-            flex: 1;
-        }
-
-        .story-name {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .story-role {
-            font-size: 0.85rem;
-            color: var(--gray);
-        }
-
-        .story-content {
-            color: #cccccc;
-            line-height: 1.6;
-            font-style: italic;
-        }
-
-        .story-quote {
-            font-size: 3rem;
-            color: var(--primary);
-            line-height: 1;
-            margin-right: 0.5rem;
-        }
-
-        /* Benefits Grid */
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .benefit-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--gray-border);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .benefit-card:hover {
-            background: rgba(255, 107, 53, 0.05);
-            border-color: rgba(255, 107, 53, 0.3);
-            transform: translateY(-4px);
-        }
-
-        .benefit-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .benefit-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .benefit-desc {
-            color: #cccccc;
-            font-size: 0.9rem;
-        }
-
-        /* Contact Section */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            margin-top: 2rem;
-        }
-
-        .contact-info {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 107, 53, 0.1);
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .contact-details h4 {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .contact-details p {
-            color: #cccccc;
-            font-size: 0.95rem;
-        }
-
-        /* Map */
-        .map-container {
-            border-radius: var(--radius);
-            overflow: hidden;
-            height: 400px;
-            background: var(--dark-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--gray-border);
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: var(--dark-card);
-            border: 1px solid var(--primary);
-            color: var(--white);
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-xl);
-            transform: translateX(400px);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 3000;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .toast.show {
-            transform: translateX(0);
-        }
-
-        /* Responsive */
-        @media (max-width: 968px) {
-            .hero-content {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .company-name-xl {
-                font-size: 2rem;
-            }
-
-            .culture-viz {
-                grid-template-columns: 1fr;
-            }
-
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .values-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-menu {
-                display: none;
-            }
-        }
-
-        /* Animations */
-        .fade-in {
-            animation: fadeIn 0.6s ease;
-        }
-
-        @keyframes fadeIn {
-            from { 
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .slide-up {
-            animation: slideUp 0.5s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Mockup JoyWork - Feed TikTok Style</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-screen: #0a0a0a;
+      --bg-glass: rgba(255, 255, 255, 0.06);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --text-main: #f5f5f5;
+      --text-muted: #b3b3b3;
+      --neon-green: #00ff88;
+      --neon-green-deep: #00C853;
+      --accent-orange: #ff5722;
+      --pill-bg: rgba(255, 255, 255, 0.08);
+      --radius-screen: 32px;
+      --radius-card: 24px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Ẩn scrollbar trình duyệt ngoài */
+    }
+
+    body {
+      padding: 24px 12px 32px;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(0, 255, 136, 0.12), transparent 55%),
+        radial-gradient(circle at bottom, rgba(255, 87, 34, 0.15), transparent 55%),
+        var(--bg-main);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1.page-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin: 0 0 20px;
+      text-align: center;
+    }
+
+    .mockup-screen {
+      width: 390px;
+      height: 844px;
+      border-radius: var(--radius-screen);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: radial-gradient(circle at top, rgba(0, 255, 136, 0.14), transparent 55%), var(--bg-screen);
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.9),
+        0 0 0 1px rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mockup-screen::before {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.26);
+      opacity: 0.65;
+    }
+
+    .mockup-inner {
+      padding-top: 32px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .header {
+      padding: 18px 16px 8px;
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .header-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-title {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .header-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+    }
+
+    .header-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .header-right {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .header-right span {
+      color: var(--neon-green);
+    }
+
+    /* VÙNG FEED – TIKTOK STYLE */
+    .feed-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 8px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      /* Scroll-snap cho TikTok feed */
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+
+      /* Ẩn scrollbar bên trong feed (giữ scroll nhưng không thấy thanh) */
+      scrollbar-width: none;          /* Firefox */
+      -ms-overflow-style: none;       /* IE/Edge cũ */
+    }
+
+    .feed-list::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    .feed-card {
+      background: var(--bg-glass);
+      border-radius: var(--radius-card);
+      border: 1px solid var(--border-glass);
+      padding: 10px 10px 12px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.9);
+
+      /* Mỗi card = gần full màn hình feed để tạo cảm giác 1 post = 1 màn */
+      min-height: calc(100% - 12px);
+      display: flex;
+      flex-direction: column;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .feed-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .feed-card-company {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .company-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      border: 1.5px solid var(--neon-green);
+      box-shadow:
+        0 0 10px rgba(0, 255, 136, 0.7),
+        0 0 18px rgba(0, 255, 136, 0.4);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .company-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .company-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .company-name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .company-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--pill-bg);
+      border: 1px solid var(--border-glass);
+      font-size: 11px;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    .pill.neon {
+      background: rgba(0, 255, 136, 0.18);
+      border-color: rgba(0, 255, 136, 0.75);
+      color: #0b1a12;
+      font-weight: 600;
+      box-shadow:
+        0 0 10px rgba(0, 255, 136, 0.7),
+        0 0 24px rgba(0, 255, 136, 0.5);
+    }
+
+    .pill.orange {
+      background: rgba(255, 87, 34, 0.16);
+      border-color: rgba(255, 87, 34, 0.7);
+      color: #ffeae1;
+      font-weight: 500;
+    }
+
+    .feed-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .feed-card-meta-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pill.type-pill {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 3px 9px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .feed-card-meta-right {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    /* KHU MEDIA – chiếm ~60–70% chiều cao màn hình card */
+    .feed-media {
+      margin-top: 8px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background: #111;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+
+      flex: 1 1 auto;           /* cho media chiếm phần lớn chiều cao */
+      min-height: 55%;          /* tạo cảm giác “TikTok video cao” */
+    }
+
+    .feed-media-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.1);
+    }
+
+    .feed-media-tag {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .feed-media-multi {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 3px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .feed-media-multi img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feed-media-right-col {
+      display: grid;
+      grid-template-rows: repeat(2, 1fr);
+      gap: 3px;
+    }
+
+    .feed-media-text-only {
+      width: 100%;
+      height: 100%;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 0 0, rgba(0, 255, 136, 0.25), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(255, 87, 34, 0.28), transparent 55%),
+        #050505;
+    }
+
+    .feed-media-text-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .feed-media-text-body {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .feed-caption {
+      font-size: 13px;
+      line-height: 1.55;
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    .feed-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .feed-tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: var(--text-muted);
+    }
+
+    .feed-footer {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .feed-footer-left {
+      display: flex;
+      gap: 8px;
+    }
+
+    .feed-footer-left span {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .feed-footer-right {
+      font-size: 11px;
+      text-align: right;
+    }
+
+    .feed-footer-right span {
+      color: var(--neon-green);
+    }
+
+    .text-strong {
+      font-weight: 600;
+    }
+
+    .text-orange {
+      color: var(--accent-orange);
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="logo">WorkMatch</a>
-            <ul class="nav-menu">
-                <li><a href="#" class="nav-link">← Quay lại</a></li>
-                <li><a href="#overview" class="nav-link active">Tổng quan</a></li>
-                <li><a href="#culture" class="nav-link">Văn hóa</a></li>
-                <li><a href="#videos" class="nav-link">Videos</a></li>
-                <li><a href="#team" class="nav-link">Đội ngũ</a></li>
-                <li><a href="#jobs" class="nav-link">Tuyển dụng</a></li>
-                <li><a href="#contact" class="nav-link">Liên hệ</a></li>
-            </ul>
-        </div>
-    </nav>
+  <h1 class="page-title">JOYWORK — TRANG CHỦ (TIKTOK FEED)</h1>
 
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Company Hero Section -->
-        <div class="company-hero">
-            <video class="hero-video-bg" autoplay muted loop>
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div class="hero-overlay">
-                <div class="hero-content">
-                    <div class="company-logo-xl">JA</div>
-                    <div class="hero-info">
-                        <h1 class="company-name-xl">John Academy</h1>
-                        <p class="company-tagline-xl">Học viện Thực hành Quản trị Mục tiêu - Kiến tạo môi trường làm việc hạnh phúc & hiệu quả</p>
-                        
-                        <div class="hero-stats">
-                            <div class="stat-item">
-                                <span class="stat-value">100+</span>
-                                <span class="stat-label">Khóa học</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-value">1400+</span>
-                                <span class="stat-label">CEO & Leaders</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-value">4.9⭐</span>
-                                <span class="stat-label">Culture Score</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-value">15+</span>
-                                <span class="stat-label">Năm kinh nghiệm</span>
-                            </div>
-                        </div>
-                        
-                        <div class="hero-actions">
-                            <button class="btn btn-primary" onclick="followCompany()">
-                                <span>➕</span> Follow Company
-                            </button>
-                            <button class="btn btn-glass" onclick="watchVideo()">
-                                <span>▶️</span> Xem Video Giới thiệu
-                            </button>
-                            <button class="btn btn-glass" onclick="contactHR()">
-                                <span>💬</span> Chat với HR
-                            </button>
-                        </div>
-                    </div>
+  <div class="mockup-screen">
+    <div class="mockup-inner">
+      <div class="header">
+        <div class="header-left">
+          <div class="header-title-row">
+            <div class="header-title">Trang chủ</div>
+            <div class="header-pill">Dành cho ứng viên</div>
+          </div>
+          <div class="header-sub">1 post = 1 màn • Vuốt dọc để khám phá</div>
+        </div>
+        <div class="header-right">
+          Hôm nay • <span>14 đề xuất mới</span><br>
+          JoyScore cao → ưu tiên hiển thị
+        </div>
+      </div>
+
+      <div class="feed-list">
+        <!-- POST 01 - VIDEO VĂN PHÒNG FULL ẢNH -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=21" alt="GIMO Việt Nam">
+              </div>
+              <div class="company-info">
+                <div class="company-name">GIMO Việt Nam</div>
+                <div class="company-meta">
+                  <span>Fintech • Hà Nội</span>
+                  <span>JoyScore 94★</span>
                 </div>
+              </div>
             </div>
-        </div>
-
-        <!-- Tab Navigation -->
-        <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('overview', this)">
-                <span>🏢</span> Tổng quan
-            </button>
-            <button class="tab-btn" onclick="switchTab('values', this)">
-                <span>💎</span> Giá trị cốt lõi
-            </button>
-            <button class="tab-btn" onclick="switchTab('culture', this)">
-                <span>🎯</span> Văn hóa
-            </button>
-            <button class="tab-btn" onclick="switchTab('videos', this)">
-                <span>🎬</span> Videos
-            </button>
-            <button class="tab-btn" onclick="switchTab('team', this)">
-                <span>👥</span> Đội ngũ
-            </button>
-            <button class="tab-btn" onclick="switchTab('stories', this)">
-                <span>📖</span> Employee Stories
-            </button>
-            <button class="tab-btn" onclick="switchTab('jobs', this)">
-                <span>💼</span> Tuyển dụng
-            </button>
-            <button class="tab-btn" onclick="switchTab('benefits', this)">
-                <span>🎁</span> Phúc lợi
-            </button>
+            <div class="pill neon">Đã xác thực</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Video văn phòng</div>
+              <span>01:12</span>
+            </div>
+            <div class="feed-card-meta-right">3.2k lượt xem</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg" alt="Văn phòng GIMO">
+            <div class="feed-media-tag">Tour một vòng văn phòng tối giản, đầy cây xanh</div>
+          </div>
+          <div class="feed-caption">
+            Thưởng Tết <span class="text-strong">3 tháng</span> + du lịch Hàn Quốc cho cả team. Mỗi quý có mini-retreat 3 ngày để toàn bộ công ty nhìn lại OKR &amp; ăn chơi có kiểm soát 😄
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#ThưởngTết3Tháng</div>
+            <div class="feed-tag">#KhôngOTCuốiTuần</div>
+            <div class="feed-tag">#Fintech</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 1.2k</span>
+              <span>💬 87</span>
+            </div>
+            <div class="feed-footer-right">Xem thêm video của GIMO →</div>
+          </div>
         </div>
 
-        <!-- Tab Content -->
-        <div id="tabContent">
-            <!-- Overview Section -->
-            <div id="overview" class="tab-content">
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>🎯</span> Về John Academy
-                    </h2>
-                    <p style="color: #cccccc; line-height: 1.8; font-size: 1.1rem;">
-                        <strong>John Academy</strong> là Học viện Thực hành Quản trị Mục tiêu hàng đầu tại Việt Nam, 
-                        chuyên đào tạo và tư vấn cho các CEO và nhà quản lý về phương pháp quản trị hiện đại và xây dựng văn hóa doanh nghiệp.
-                    </p>
-                    <p style="color: #cccccc; line-height: 1.8; margin-top: 1rem;">
-                        Với sứ mệnh "Mang những nguyên lý quản trị bài bản của thế giới về với Việt Nam", 
-                        chúng tôi tin rằng người Việt Nam rất giỏi, và nếu được trang bị tư duy đúng đắn, 
-                        chúng ta hoàn toàn có thể vươn lên và cạnh tranh cùng thế giới.
-                    </p>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                        <div style="text-align: center; padding: 1.5rem; background: rgba(255, 107, 53, 0.05); border-radius: 16px;">
-                            <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">100+</div>
-                            <div style="color: #cccccc;">Khóa học & Chương trình</div>
-                        </div>
-                        <div style="text-align: center; padding: 1.5rem; background: rgba(255, 107, 53, 0.05); border-radius: 16px;">
-                            <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">1400+</div>
-                            <div style="color: #cccccc;">CEO & Leaders đã đào tạo</div>
-                        </div>
-                        <div style="text-align: center; padding: 1.5rem; background: rgba(255, 107, 53, 0.05); border-radius: 16px;">
-                            <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">15+</div>
-                            <div style="color: #cccccc;">Năm kinh nghiệm</div>
-                        </div>
-                        <div style="text-align: center; padding: 1.5rem; background: rgba(255, 107, 53, 0.05); border-radius: 16px;">
-                            <div style="font-size: 2.5rem; font-weight: 900; color: var(--primary);">50+</div>
-                            <div style="color: #cccccc;">Đối tác doanh nghiệp</div>
-                        </div>
-                    </div>
+        <!-- POST 02 - ẢNH TEAMBUILDING -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=12" alt="Base.vn">
+              </div>
+              <div class="company-info">
+                <div class="company-name">Base.vn</div>
+                <div class="company-meta">
+                  <span>SaaS • HCM</span>
+                  <span>JoyScore 90★</span>
                 </div>
-
-                <!-- Mission & Vision -->
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>🚀</span> Sứ mệnh & Tầm nhìn
-                    </h2>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                        <div style="padding: 2rem; background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, transparent 100%); border-radius: 16px; border-left: 4px solid var(--primary);">
-                            <h3 style="margin-bottom: 1rem; color: var(--primary);">Sứ mệnh</h3>
-                            <p style="color: #cccccc; line-height: 1.7;">
-                                Mang những nguyên lý quản trị bài bản của thế giới về với Việt Nam, 
-                                góp phần kiến tạo nên những môi trường làm việc hạnh phúc và hiệu quả.
-                                Giúp người Việt Nam xứng đáng có một cuộc sống tốt hơn thông qua quản trị đúng.
-                            </p>
-                        </div>
-                        <div style="padding: 2rem; background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, transparent 100%); border-radius: 16px; border-left: 4px solid var(--success);">
-                            <h3 style="margin-bottom: 1rem; color: var(--success);">Tầm nhìn</h3>
-                            <p style="color: #cccccc; line-height: 1.7;">
-                                Trở thành học viện quản trị hàng đầu Đông Nam Á, nơi các CEO và nhà quản lý 
-                                tìm thấy giải pháp để xây dựng doanh nghiệp bền vững và 
-                                tận hưởng niềm vui trong chính công ty của mình.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-
-            <!-- Core Values Section -->
-            <div id="values" class="tab-content" style="display: none;">
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>💎</span> 5 Giá trị cốt lõi tại John Academy
-                    </h2>
-                    
-                    <div class="values-grid">
-                        <div class="value-card">
-                            <div class="value-icon">🤝</div>
-                            <h3 class="value-title">Tôn trọng & Tuân thủ</h3>
-                            <p class="value-description">
-                                Tôn trọng và tuân thủ các thỏa thuận. Chúng tôi xây dựng niềm tin thông qua 
-                                việc giữ lời hứa và tôn trọng mọi cam kết với khách hàng, đồng nghiệp và đối tác.
-                            </p>
-                        </div>
-                        
-                        <div class="value-card">
-                            <div class="value-icon">💡</div>
-                            <h3 class="value-title">Luôn kiến tạo</h3>
-                            <p class="value-description">
-                                Luôn kiến tạo, chủ động tạo giá trị thay vì đổ lỗi. Mỗi thành viên là người 
-                                sáng tạo giá trị, không ngừng tìm kiếm giải pháp và cơ hội phát triển.
-                            </p>
-                        </div>
-                        
-                        <div class="value-card">
-                            <div class="value-icon">❤️</div>
-                            <h3 class="value-title">Sống có tâm</h3>
-                            <p class="value-description">
-                                Đặt lợi ích khách hàng - cộng đồng - công ty - đồng nghiệp trước cá nhân. 
-                                Thành công bền vững đến từ việc tạo giá trị cho cộng đồng.
-                            </p>
-                        </div>
-                        
-                        <div class="value-card">
-                            <div class="value-icon">👁️</div>
-                            <h3 class="value-title">Góc nhìn đa chiều</h3>
-                            <p class="value-description">
-                                Giữ góc nhìn đa chiều, tìm kiếm điều tích cực. Mọi thách thức đều là cơ hội 
-                                để học hỏi và phát triển khi nhìn từ nhiều góc độ khác nhau.
-                            </p>
-                        </div>
-                        
-                        <div class="value-card">
-                            <div class="value-icon">🎁</div>
-                            <h3 class="value-title">Sẵn sàng cho đi</h3>
-                            <p class="value-description">
-                                Sẵn sàng cho đi, vì "cho là nhận". Chia sẻ kiến thức, kinh nghiệm và 
-                                cơ hội để cùng nhau phát triển và thành công.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="pill">Đang mời nhân viên xác thực</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Ảnh teambuilding</div>
+              <span>Đà Lạt</span>
             </div>
-
-            <!-- Culture Section -->
-            <div id="culture" class="tab-content" style="display: none;">
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>📊</span> Culture DNA Analysis
-                    </h2>
-                    
-                    <div class="culture-viz">
-                        <div class="chart-container">
-                            <canvas id="cultureChart"></canvas>
-                        </div>
-                        
-                        <div class="culture-metrics">
-                            <div class="metric-item">
-                                <div class="metric-score">95</div>
-                                <div class="metric-info">
-                                    <div class="metric-name">Đào tạo & Phát triển</div>
-                                    <div class="metric-bar">
-                                        <div class="metric-fill" style="width: 95%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="metric-item">
-                                <div class="metric-score">92</div>
-                                <div class="metric-info">
-                                    <div class="metric-name">Innovation & Creativity</div>
-                                    <div class="metric-bar">
-                                        <div class="metric-fill" style="width: 92%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="metric-item">
-                                <div class="metric-score">88</div>
-                                <div class="metric-info">
-                                    <div class="metric-name">Work-Life Balance</div>
-                                    <div class="metric-bar">
-                                        <div class="metric-fill" style="width: 88%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="metric-item">
-                                <div class="metric-score">90</div>
-                                <div class="metric-info">
-                                    <div class="metric-name">Teamwork & Collaboration</div>
-                                    <div class="metric-bar">
-                                        <div class="metric-fill" style="width: 90%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="metric-item">
-                                <div class="metric-score">93</div>
-                                <div class="metric-info">
-                                    <div class="metric-name">Leadership & Vision</div>
-                                    <div class="metric-bar">
-                                        <div class="metric-fill" style="width: 93%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="metric-item">
-                                <div class="metric-score">89</div>
-                                <div class="metric-info">
-                                    <div class="metric-name">Transparency & Trust</div>
-                                    <div class="metric-bar">
-                                        <div class="metric-fill" style="width: 89%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="feed-card-meta-right">Hôm qua</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg" alt="Teambuilding Base">
+            <div class="feed-media-tag">3 ngày 2 đêm “làm hết mình, chơi hết sức”</div>
+          </div>
+          <div class="feed-caption">
+            Company Trip Q1/2026: không check mail, không nói chuyện KPI, chỉ nói chuyện ước mơ. Mỗi thành viên được chia sẻ plan cá nhân 1 năm tới.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#Teambuilding</div>
+            <div class="feed-tag">#ĐàLạt</div>
+            <div class="feed-tag">#BaseLife</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 986</span>
+              <span>💬 54</span>
             </div>
-
-            <!-- Videos Section -->
-            <div id="videos" class="tab-content" style="display: none;">
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>🎬</span> Khám phá John Academy qua Video
-                    </h2>
-                    
-                    <div class="video-grid">
-                        <div class="video-card" onclick="playVideo('ceo-vision')">
-                            <div class="video-thumbnail">
-                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=200&fit=crop" alt="CEO Vision">
-                                <div class="video-play-overlay">
-                                    <div class="play-icon">▶️</div>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3 class="video-title">CEO Mai Xuân Đạt chia sẻ về OKRs</h3>
-                                <div class="video-meta">
-                                    <span>👁 15.2K views</span>
-                                    <span>⏱ 18 phút</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="video-card" onclick="playVideo('office-tour')">
-                            <div class="video-thumbnail">
-                                <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400&h=200&fit=crop" alt="Office Tour">
-                                <div class="video-play-overlay">
-                                    <div class="play-icon">▶️</div>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3 class="video-title">Tour văn phòng John Academy</h3>
-                                <div class="video-meta">
-                                    <span>👁 8.7K views</span>
-                                    <span>⏱ 5 phút</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="video-card" onclick="playVideo('training-day')">
-                            <div class="video-thumbnail">
-                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=200&fit=crop" alt="Training Day">
-                                <div class="video-play-overlay">
-                                    <div class="play-icon">▶️</div>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3 class="video-title">Một ngày training tại John Academy</h3>
-                                <div class="video-meta">
-                                    <span>👁 12.3K views</span>
-                                    <span>⏱ 10 phút</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="video-card" onclick="playVideo('client-success')">
-                            <div class="video-thumbnail">
-                                <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=200&fit=crop" alt="Client Success">
-                                <div class="video-play-overlay">
-                                    <div class="play-icon">▶️</div>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3 class="video-title">Câu chuyện thành công từ khách hàng</h3>
-                                <div class="video-meta">
-                                    <span>👁 9.8K views</span>
-                                    <span>⏱ 15 phút</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="video-card" onclick="playVideo('team-building')">
-                            <div class="video-thumbnail">
-                                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=200&fit=crop" alt="Team Building">
-                                <div class="video-play-overlay">
-                                    <div class="play-icon">▶️</div>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3 class="video-title">Team Building 2024 - "One Team, One Dream"</h3>
-                                <div class="video-meta">
-                                    <span>👁 6.5K views</span>
-                                    <span>⏱ 8 phút</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="video-card" onclick="playVideo('employee-share')">
-                            <div class="video-thumbnail">
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=200&fit=crop" alt="Employee Share">
-                                <div class="video-play-overlay">
-                                    <div class="play-icon">▶️</div>
-                                </div>
-                            </div>
-                            <div class="video-info">
-                                <h3 class="video-title">Nhân viên chia sẻ về văn hóa John Academy</h3>
-                                <div class="video-meta">
-                                    <span>👁 5.2K views</span>
-                                    <span>⏱ 12 phút</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Team Section -->
-            <div id="team" class="tab-content" style="display: none;">
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>👥</span> Leadership Team
-                    </h2>
-                    
-                    <div class="team-grid">
-                        <div class="team-card">
-                            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop" alt="CEO" class="team-avatar">
-                            <h3 class="team-name">Mai Xuân Đạt</h3>
-                            <div class="team-role">Founder & CEO</div>
-                            <p class="team-bio">
-                                15 năm kinh nghiệm làm CEO, tác giả cuốn sách OKRs "Hiểu đúng, Làm đúng" - 
-                                cuốn sách về OKRs đầu tiên của tác giả người Việt.
-                            </p>
-                        </div>
-                        
-                        <div class="team-card">
-                            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop" alt="COO" class="team-avatar">
-                            <h3 class="team-name">Nguyễn Thị Hương</h3>
-                            <div class="team-role">COO</div>
-                            <p class="team-bio">
-                                Chuyên gia về vận hành và phát triển tổ chức, 
-                                10+ năm kinh nghiệm trong lĩnh vực đào tạo doanh nghiệp.
-                            </p>
-                        </div>
-                        
-                        <div class="team-card">
-                            <img src="https://images.unsplash.com/photo-1556157382-97eda2f9e2bf?w=200&h=200&fit=crop" alt="Head of Training" class="team-avatar">
-                            <h3 class="team-name">Lê Văn Minh</h3>
-                            <div class="team-role">Head of Training</div>
-                            <p class="team-bio">
-                                Master Coach với hơn 500 giờ coaching cho CEO và leaders, 
-                                chuyên gia về Building True Company.
-                            </p>
-                        </div>
-                        
-                        <div class="team-card">
-                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop" alt="HR Director" class="team-avatar">
-                            <h3 class="team-name">Phạm Thu Trang</h3>
-                            <div class="team-role">HR Director</div>
-                            <p class="team-bio">
-                                Kiến tạo văn hóa doanh nghiệp và phát triển con người, 
-                                đam mê xây dựng môi trường làm việc hạnh phúc.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Employee Stories Section -->
-            <div id="stories" class="tab-content" style="display: none;">
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>📖</span> Employee Stories
-                    </h2>
-                    
-                    <div class="story-carousel">
-                        <div class="story-card">
-                            <div class="story-header">
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&h=100&fit=crop" alt="Employee" class="story-avatar">
-                                <div class="story-author">
-                                    <div class="story-name">Trần Thị Mai</div>
-                                    <div class="story-role">Training Specialist • 3 năm tại John Academy</div>
-                                </div>
-                            </div>
-                            <div class="story-content">
-                                <span class="story-quote">"</span>
-                                Làm việc tại John Academy không chỉ là công việc, mà là hành trình phát triển bản thân. 
-                                Mỗi ngày đều học được điều mới từ các CEO và từ chính đồng nghiệp của mình. 
-                                Văn hóa "cho là nhận" ở đây thực sự tạo nên sự khác biệt.
-                            </div>
-                        </div>
-                        
-                        <div class="story-card">
-                            <div class="story-header">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Employee" class="story-avatar">
-                                <div class="story-author">
-                                    <div class="story-name">Nguyễn Văn Hùng</div>
-                                    <div class="story-role">Senior Coach • 5 năm tại John Academy</div>
-                                </div>
-                            </div>
-                            <div class="story-content">
-                                <span class="story-quote">"</span>
-                                Điều tôi trân trọng nhất là được làm việc trong môi trường minh bạch và tôn trọng. 
-                                Leadership team luôn lắng nghe và tạo điều kiện cho mọi người phát triển. 
-                                Tôi đã grow từ trainer thành senior coach trong 5 năm.
-                            </div>
-                        </div>
-                        
-                        <div class="story-card">
-                            <div class="story-header">
-                                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop" alt="Employee" class="story-avatar">
-                                <div class="story-author">
-                                    <div class="story-name">Lê Thị Hoa</div>
-                                    <div class="story-role">Marketing Manager • 2 năm tại John Academy</div>
-                                </div>
-                            </div>
-                            <div class="story-content">
-                                <span class="story-quote">"</span>
-                                John Academy cho tôi cơ hội để thử nghiệm và sáng tạo không giới hạn. 
-                                Văn hóa "luôn kiến tạo" giúp tôi không sợ thất bại và luôn tìm cách tạo giá trị mới. 
-                                Team support cực kỳ tốt!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Jobs Section -->
-            <div id="jobs" class="tab-content" style="display: none;">
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>💼</span> Cơ hội nghề nghiệp tại John Academy
-                    </h2>
-                    
-                    <div class="job-list">
-                        <div class="job-item" onclick="viewJob('senior-coach')">
-                            <div class="job-details">
-                                <h3 class="job-title">Senior Coach / Huấn luyện viên cao cấp</h3>
-                                <div class="job-meta">
-                                    <span>📍 Hà Nội</span>
-                                    <span>💼 Full-time</span>
-                                    <span>🎓 5+ năm kinh nghiệm</span>
-                                    <span>📅 Deadline: 31/12/2024</span>
-                                </div>
-                            </div>
-                            <div class="job-salary">30-50M</div>
-                        </div>
-                        
-                        <div class="job-item" onclick="viewJob('marketing-lead')">
-                            <div class="job-details">
-                                <h3 class="job-title">Marketing Lead</h3>
-                                <div class="job-meta">
-                                    <span>📍 Hà Nội / Remote OK</span>
-                                    <span>💼 Full-time</span>
-                                    <span>🎓 3+ năm kinh nghiệm</span>
-                                    <span>📅 Deadline: 25/12/2024</span>
-                                </div>
-                            </div>
-                            <div class="job-salary">25-35M</div>
-                        </div>
-                        
-                        <div class="job-item" onclick="viewJob('training-coordinator')">
-                            <div class="job-details">
-                                <h3 class="job-title">Training Coordinator</h3>
-                                <div class="job-meta">
-                                    <span>📍 TP.HCM</span>
-                                    <span>💼 Full-time</span>
-                                    <span>🎓 2+ năm kinh nghiệm</span>
-                                    <span>📅 Deadline: 20/12/2024</span>
-                                </div>
-                            </div>
-                            <div class="job-salary">18-25M</div>
-                        </div>
-                        
-                        <div class="job-item" onclick="viewJob('business-development')">
-                            <div class="job-details">
-                                <h3 class="job-title">Business Development Manager</h3>
-                                <div class="job-meta">
-                                    <span>📍 Hà Nội</span>
-                                    <span>💼 Full-time</span>
-                                    <span>🎓 4+ năm kinh nghiệm B2B</span>
-                                    <span>📅 Deadline: 30/12/2024</span>
-                                </div>
-                            </div>
-                            <div class="job-salary">35-50M</div>
-                        </div>
-                    </div>
-                    
-                    <button class="btn btn-primary" style="width: 100%; margin-top: 2rem;">
-                        Xem tất cả vị trí tuyển dụng →
-                    </button>
-                </div>
-            </div>
-
-            <!-- Benefits Section -->
-            <div id="benefits" class="tab-content" style="display: none;">
-                <div class="section-card fade-in">
-                    <h2 class="section-title">
-                        <span>🎁</span> Phúc lợi & Quyền lợi
-                    </h2>
-                    
-                    <div class="benefits-grid">
-                        <div class="benefit-card">
-                            <div class="benefit-icon">💰</div>
-                            <h3 class="benefit-title">Lương & Thưởng</h3>
-                            <p class="benefit-desc">
-                                Lương competitive, review 2 lần/năm, thưởng hiệu suất và thưởng dự án
-                            </p>
-                        </div>
-                        
-                        <div class="benefit-card">
-                            <div class="benefit-icon">📚</div>
-                            <h3 class="benefit-title">Học tập & Phát triển</h3>
-                            <p class="benefit-desc">
-                                Được tham gia tất cả khóa học của John Academy miễn phí, budget học tập cá nhân 10tr/năm
-                            </p>
-                        </div>
-                        
-                        <div class="benefit-card">
-                            <div class="benefit-icon">🏥</div>
-                            <h3 class="benefit-title">Bảo hiểm Premium</h3>
-                            <p class="benefit-desc">
-                                Bảo hiểm sức khỏe cao cấp cho nhân viên và gia đình, khám sức khỏe định kỳ
-                            </p>
-                        </div>
-                        
-                        <div class="benefit-card">
-                            <div class="benefit-icon">🏖️</div>
-                            <h3 class="benefit-title">Nghỉ phép & Du lịch</h3>
-                            <p class="benefit-desc">
-                                15 ngày phép/năm, company trip 2 lần/năm, team building hàng quý
-                            </p>
-                        </div>
-                        
-                        <div class="benefit-card">
-                            <div class="benefit-icon">💻</div>
-                            <h3 class="benefit-title">Flexible Working</h3>
-                            <p class="benefit-desc">
-                                Flexible hours, work from home 2 ngày/tuần, MacBook và gear setup theo nhu cầu
-                            </p>
-                        </div>
-                        
-                        <div class="benefit-card">
-                            <div class="benefit-icon">🎯</div>
-                            <h3 class="benefit-title">Career Path</h3>
-                            <p class="benefit-desc">
-                                Clear career path, mentoring program, cơ hội thăng tiến nhanh dựa trên năng lực
-                            </p>
-                        </div>
-                        
-                        <div class="benefit-card">
-                            <div class="benefit-icon">☕</div>
-                            <h3 class="benefit-title">Office Perks</h3>
-                            <p class="benefit-desc">
-                                Free lunch & snacks, coffee bar, game room, nap room cho power nap
-                            </p>
-                        </div>
-                        
-                        <div class="benefit-card">
-                            <div class="benefit-icon">👶</div>
-                            <h3 class="benefit-title">Family Care</h3>
-                            <p class="benefit-desc">
-                                Maternity/Paternity leave mở rộng, kids day, family day events
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="feed-footer-right"><span>32</span> nhân viên đã xác thực chuyến đi này</div>
+          </div>
         </div>
 
-        <!-- Contact Section -->
-        <div class="section-card fade-in">
-            <h2 class="section-title">
-                <span>📍</span> Liên hệ với chúng tôi
-            </h2>
-            
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">📍</div>
-                        <div class="contact-details">
-                            <h4>Văn phòng chính</h4>
-                            <p>Tầng 8, Tòa nhà ABC, 123 Nguyễn Chí Thanh, Đống Đa, Hà Nội</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">📧</div>
-                        <div class="contact-details">
-                            <h4>Email</h4>
-                            <p>contact@johnacademy.vn</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">📱</div>
-                        <div class="contact-details">
-                            <h4>Hotline</h4>
-                            <p>1900 1234 56</p>
-                        </div>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <div class="contact-icon">🌐</div>
-                        <div class="contact-details">
-                            <h4>Website</h4>
-                            <p>www.johnacademy.vn</p>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 2rem;">
-                        <button class="btn btn-primary" style="width: 100%;">
-                            💬 Chat với HR Team
-                        </button>
-                    </div>
+        <!-- POST 03 - ALBUM 3 ẢNH VĂN PHÒNG -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=32" alt="TopCV Studio">
+              </div>
+              <div class="company-info">
+                <div class="company-name">TopCV Studio</div>
+                <div class="company-meta">
+                  <span>HR Tech • Hà Nội</span>
+                  <span>JoyScore 88★</span>
                 </div>
-                
-                <div class="map-container">
-                    <div style="color: var(--gray); font-size: 1.25rem;">
-                        🗺️ Interactive Map
-                    </div>
-                </div>
+              </div>
             </div>
+            <div class="pill neon">Văn hóa mở</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Album ảnh</div>
+              <span>3/12</span>
+            </div>
+            <div class="feed-card-meta-right">“Một ngày ở TopCV Studio”</div>
+          </div>
+          <div class="feed-media">
+            <div class="feed-media-multi">
+              <img src="https://images.pexels.com/photos/1181355/pexels-photo-1181355.jpeg" alt="Không gian mở">
+              <div class="feed-media-right-col">
+                <img src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg" alt="Phòng họp">
+                <img src="https://images.pexels.com/photos/1181562/pexels-photo-1181562.jpeg" alt="Khu relax">
+              </div>
+            </div>
+            <div class="feed-media-tag">Khu focus • phòng brainstorm • góc chill (+9 ảnh nữa)</div>
+          </div>
+          <div class="feed-caption">
+            Nguyên tắc: không ép ai “vui vẻ”, văn phòng chỉ tạo điều kiện để mọi người dễ trò chuyện, dễ tập trung và dễ nghỉ ngơi hơn.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#OpenOffice</div>
+            <div class="feed-tag">#FocusRoom</div>
+            <div class="feed-tag">#KhôngDrama</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 712</span>
+              <span>💬 23</span>
+            </div>
+            <div class="feed-footer-right">Xem 9 ảnh khác →</div>
+          </div>
         </div>
+
+        <!-- POST 04 - STORY TEXT CEO -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=7" alt="Ants Media">
+              </div>
+              <div class="company-info">
+                <div class="company-name">Ants Media</div>
+                <div class="company-meta">
+                  <span>Agency • HCM</span>
+                  <span>JoyScore 80★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">CEO lên tiếng</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Story text</div>
+              <span>3 phút đọc</span>
+            </div>
+            <div class="feed-card-meta-right">Đăng bởi CEO</div>
+          </div>
+          <div class="feed-media">
+            <div class="feed-media-text-only">
+              <div class="feed-media-text-title">“Không nhận những job khiến team kiệt sức”</div>
+              <div class="feed-media-text-body">
+                “Từ 2026, chúng tôi từ chối các campaign yêu cầu OT triền miên, brief qua loa và thiếu tôn trọng đội ngũ. Doanh thu có thể giảm, nhưng sức khỏe tinh thần của team phải được bảo vệ trước.”
+              </div>
+            </div>
+          </div>
+          <div class="feed-caption">
+            Bài viết này được <span class="text-strong">28/32</span> nhân viên account xác nhận là đúng với thực tế vận hành trong 6 tháng qua.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#AgencyLife</div>
+            <div class="feed-tag">#SayNoToToxic</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 1.8k</span>
+              <span>💬 210</span>
+            </div>
+            <div class="feed-footer-right"><span>87%</span> nhân viên đồng ý</div>
+          </div>
+        </div>
+
+        <!-- POST 05 - VIDEO HỌC TẬP -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=45" alt="MindX School">
+              </div>
+              <div class="company-info">
+                <div class="company-name">MindX School</div>
+                <div class="company-meta">
+                  <span>Edtech • Hà Nội</span>
+                  <span>JoyScore 92★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill neon">Culture of Learning</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Video workshop</div>
+              <span>00:47</span>
+            </div>
+            <div class="feed-card-meta-right">Đăng bởi HR</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/1181359/pexels-photo-1181359.jpeg" alt="Workshop MindX">
+            <div class="feed-media-tag">Workshop “Cãi sếp cho đúng cách” mỗi tháng 1 lần</div>
+          </div>
+          <div class="feed-caption">
+            Mọi nhân viên mới đều được tham gia workshop về giao tiếp &amp; feedback. Rule: <span class="text-strong">“Phản biện mạnh, tôn trọng cao”</span>.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#LearningCulture</div>
+            <div class="feed-tag">#Feedback</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 643</span>
+              <span>💬 29</span>
+            </div>
+            <div class="feed-footer-right">“Cãi sếp mà không sợ” trend ↑</div>
+          </div>
+        </div>
+
+        <!-- POST 06 - ALBUM CSR -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=50" alt="GreenHub">
+              </div>
+              <div class="company-info">
+                <div class="company-name">GreenHub Tech</div>
+                <div class="company-meta">
+                  <span>Product • Đà Nẵng</span>
+                  <span>JoyScore 85★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Cam kết bền vững</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Album CSR</div>
+              <span>5 ảnh</span>
+            </div>
+            <div class="feed-card-meta-right">Thứ 7, tuần rồi</div>
+          </div>
+          <div class="feed-media">
+            <div class="feed-media-multi">
+              <img src="https://images.pexels.com/photos/6646901/pexels-photo-6646901.jpeg" alt="CSR 1">
+              <div class="feed-media-right-col">
+                <img src="https://images.pexels.com/photos/6646918/pexels-photo-6646918.jpeg" alt="CSR 2">
+                <img src="https://images.pexels.com/photos/6647012/pexels-photo-6647012.jpeg" alt="CSR 3">
+              </div>
+            </div>
+            <div class="feed-media-tag">Team dọn rác bãi biển Sơn Trà (+2 ảnh nữa)</div>
+          </div>
+          <div class="feed-caption">
+            Mỗi quý, toàn công ty dành 1 ngày cuối tuần cho hoạt động cộng đồng. Tháng này: bãi biển sạch hơn, team cũng gần nhau hơn.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#CSR</div>
+            <div class="feed-tag">#XanhHoá</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 432</span>
+              <span>💬 18</span>
+            </div>
+            <div class="feed-footer-right"><span>67%</span> nhân viên tham gia</div>
+          </div>
+        </div>
+
+        <!-- POST 07 - TEXT THREAD “CHUYỆN THẬT” -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=16" alt="NomadX">
+              </div>
+              <div class="company-info">
+                <div class="company-name">NomadX Studio</div>
+                <div class="company-meta">
+                  <span>Remote-first • Toàn quốc</span>
+                  <span>JoyScore 89★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Nhân viên kể</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Story text</div>
+              <span>4 phút đọc</span>
+            </div>
+            <div class="feed-card-meta-right">Đăng bởi Dev Senior</div>
+          </div>
+          <div class="feed-caption">
+            “Ngày mình bị burnout và cách team lead xử lý” — một câu chuyện thật về việc tạm dừng project 1 tuần để cả team cùng reset, không ai bị xem là “yếu kém” vì dám nói mệt.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#Burnout</div>
+            <div class="feed-tag">#PsychologicalSafety</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 1.1k</span>
+              <span>💬 132</span>
+            </div>
+            <div class="feed-footer-right"><span>24</span> phản hồi tương tự từ nhân viên khác</div>
+          </div>
+        </div>
+
+        <!-- POST 08 - ẢNH GIỜ TRÀ CHIỀU -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=38" alt="Bean&Code">
+              </div>
+              <div class="company-info">
+                <div class="company-name">Bean&Code</div>
+                <div class="company-meta">
+                  <span>Product • Hà Nội</span>
+                  <span>JoyScore 78★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill orange">Giờ tea-break</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Ảnh đời sống</div>
+              <span>Snack Friday</span>
+            </div>
+            <div class="feed-card-meta-right">Hôm nay</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184198/pexels-photo-3184198.jpeg" alt="Tea break">
+            <div class="feed-media-tag">15:30 thứ 6: không meeting, chỉ trà sữa &amp; board game</div>
+          </div>
+          <div class="feed-caption">
+            Tea-break là lịch cố định, không bị “lấy mất” vì họp gấp. Ai họp giờ này thì auto được dời lịch.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#TeaBreak</div>
+            <div class="feed-tag">#NoMeetingFriday</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 389</span>
+              <span>💬 17</span>
+            </div>
+            <div class="feed-footer-right"><span>73%</span> nhân viên tham gia đều đặn</div>
+          </div>
+        </div>
+
+        <!-- POST 09 - VIDEO HỌP OKR -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=41" alt="OKR Hub">
+              </div>
+              <div class="company-info">
+                <div class="company-name">OKR Hub</div>
+                <div class="company-meta">
+                  <span>Consulting • HCM</span>
+                  <span>JoyScore 91★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill neon">Minh bạch mục tiêu</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Video họp</div>
+              <span>01:35</span>
+            </div>
+            <div class="feed-card-meta-right">Mở OKR Q2/2026</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/1181395/pexels-photo-1181395.jpeg" alt="Họp OKR">
+            <div class="feed-media-tag">Toàn công ty cùng vote OKR quan trọng nhất</div>
+          </div>
+          <div class="feed-caption">
+            Mọi người đều thấy rõ công ty đang đi đâu, ai đóng góp điều gì. Không có OKR “trên trời” đẩy xuống.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#OKR</div>
+            <div class="feed-tag">#Transparency</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 522</span>
+              <span>💬 34</span>
+            </div>
+            <div class="feed-footer-right"><span>96%</span> nhân viên tham dự</div>
+          </div>
+        </div>
+
+        <!-- POST 10 - TEXT CAM KẾT THƯỞNG TẾT -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=26" alt="JoyRetail">
+              </div>
+              <div class="company-info">
+                <div class="company-name">JoyRetail</div>
+                <div class="company-meta">
+                  <span>Retail • Hải Phòng</span>
+                  <span>JoyScore 76★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Cam kết thưởng Tết</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Post text</div>
+              <span>Công khai</span>
+            </div>
+            <div class="feed-card-meta-right">02/12/2025</div>
+          </div>
+          <div class="feed-caption">
+            Năm 2026, JoyRetail cam kết: thưởng Tết tối thiểu <span class="text-strong">1.5 tháng lương</span>, tối đa 3 tháng cho team đạt từ 100% KPI. Cam kết này đã được gửi email tới <span class="text-strong">92%</span> nhân viên toàn hệ thống.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#ThưởngTết</div>
+            <div class="feed-tag">#Retail</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 604</span>
+              <span>💬 47</span>
+            </div>
+            <div class="feed-footer-right"><span>68%</span> nhân viên đã xác thực đúng năm 2025</div>
+          </div>
+        </div>
+
+        <!-- POST 11 - ALBUM WORK FROM HOME -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=19" alt="Remote Friends">
+              </div>
+              <div class="company-info">
+                <div class="company-name">Remote Friends</div>
+                <div class="company-meta">
+                  <span>Remote • Toàn quốc</span>
+                  <span>JoyScore 87★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">WFH thật sự</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Album WFH</div>
+              <span>4 ảnh</span>
+            </div>
+            <div class="feed-card-meta-right">Thứ 4</div>
+          </div>
+          <div class="feed-media">
+            <div class="feed-media-multi">
+              <img src="https://images.pexels.com/photos/1181243/pexels-photo-1181243.jpeg" alt="WFH 1">
+              <div class="feed-media-right-col">
+                <img src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg" alt="WFH 2">
+                <img src="https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg" alt="WFH 3">
+              </div>
+            </div>
+            <div class="feed-media-tag">Góc làm việc tại nhà của team Remote Friends</div>
+          </div>
+          <div class="feed-caption">
+            Chính sách WFH 3/5 ngày, không yêu cầu mở cam nếu không cần. Quan trọng là output rõ ràng, không phải online “cho có mặt”.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#WFH</div>
+            <div class="feed-tag">#AsyncWork</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 455</span>
+              <span>💬 21</span>
+            </div>
+            <div class="feed-footer-right"><span>79%</span> nhân viên chọn WFH ≥ 2 ngày/tuần</div>
+          </div>
+        </div>
+
+        <!-- POST 12 - VIDEO ONBOARDING -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=30" alt="JoyFin">
+              </div>
+              <div class="company-info">
+                <div class="company-name">JoyFin</div>
+                <div class="company-meta">
+                  <span>Fintech • HCM</span>
+                  <span>JoyScore 83★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Onboarding rõ ràng</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Video onboarding</div>
+              <span>00:59</span>
+            </div>
+            <div class="feed-card-meta-right">Guideline cho nhân viên mới</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/1181605/pexels-photo-1181605.jpeg" alt="Onboarding">
+            <div class="feed-media-tag">Tuần đầu: không giao KPI nặng, chỉ học &amp; shadow</div>
+          </div>
+          <div class="feed-caption">
+            Mọi nhân viên đều có buddy đi kèm 30 ngày đầu. Không ai phải “tự bơi” trong mớ tool &amp; quy trình.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#Onboarding</div>
+            <div class="feed-tag">#BuddySystem</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 321</span>
+              <span>💬 14</span>
+            </div>
+            <div class="feed-footer-right"><span>91%</span> nhân viên mới đánh giá 5★</div>
+          </div>
+        </div>
+
+        <!-- POST 13 - BÀI POST HỎI ĐÁP Q&A -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=48" alt="HappyDev">
+              </div>
+              <div class="company-info">
+                <div class="company-name">HappyDev Studio</div>
+                <div class="company-meta">
+                  <span>Software • Hà Nội</span>
+                  <span>JoyScore 82★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Ask me anything</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Q&amp;A với HR</div>
+              <span>Live text</span>
+            </div>
+            <div class="feed-card-meta-right">Thứ 5 hàng tuần</div>
+          </div>
+          <div class="feed-caption">
+            Mỗi tuần, HR mở 1 thread Q&amp;A công khai: ứng viên hỏi gì cũng trả lời — từ lương, OT, drama cho đến chính sách nghỉ phép.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#AMA</div>
+            <div class="feed-tag">#HRTransparent</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 274</span>
+              <span>💬 63</span>
+            </div>
+            <div class="feed-footer-right">Xem những câu hỏi nổi bật →</div>
+          </div>
+        </div>
+
+        <!-- POST 14 - ẢNH SỰ KIỆN 8/3 -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=11" alt="HerTech">
+              </div>
+              <div class="company-info">
+                <div class="company-name">HerTech Lab</div>
+                <div class="company-meta">
+                  <span>Tech • Hà Nội</span>
+                  <span>JoyScore 88★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Tôn vinh phụ nữ</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Ảnh sự kiện</div>
+              <span>8/3</span>
+            </div>
+            <div class="feed-card-meta-right">Năm 2026</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184405/pexels-photo-3184405.jpeg" alt="Sự kiện 8/3">
+            <div class="feed-media-tag">Talkshow “Phụ nữ trong ngành tech”</div>
+          </div>
+          <div class="feed-caption">
+            Không chỉ tặng quà, HerTech dành cả buổi chiều để lắng nghe câu chuyện thật của các chị em dev, tester, PM.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#WomenInTech</div>
+            <div class="feed-tag">#Diversity</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 501</span>
+              <span>💬 39</span>
+            </div>
+            <div class="feed-footer-right"><span>64%</span> nhân sự là nữ</div>
+          </div>
+        </div>
+
+        <!-- POST 15 - LONGFORM STORY TELLING -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=24" alt="BookJoy">
+              </div>
+              <div class="company-info">
+                <div class="company-name">BookJoy</div>
+                <div class="company-meta">
+                  <span>Publishing • Hà Nội</span>
+                  <span>JoyScore 79★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Story dài</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Bài viết dài</div>
+              <span>6 phút đọc</span>
+            </div>
+            <div class="feed-card-meta-right">Viết bởi Content Lead</div>
+          </div>
+          <div class="feed-caption">
+            “5 lần chúng tôi thất bại khi cố xây văn hóa đọc trong công ty” — bài viết kể chi tiết từ lần mua sách bừa bãi cho đến khi xây được club đọc sách thật sự sống.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#StoryTelling</div>
+            <div class="feed-tag">#CultureBuilding</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 342</span>
+              <span>💬 27</span>
+            </div>
+            <div class="feed-footer-right">Xem bản đầy đủ trên trang công ty</div>
+          </div>
+        </div>
+
+        <!-- POST 16 - ẢNH PRODUCT LAUNCH -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=29" alt="JoyFood">
+              </div>
+              <div class="company-info">
+                <div class="company-name">JoyFood</div>
+                <div class="company-meta">
+                  <span>F&amp;B • HCM</span>
+                  <span>JoyScore 75★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Ra mắt sản phẩm</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Ảnh launch</div>
+              <span>New menu</span>
+            </div>
+            <div class="feed-card-meta-right">Tháng 1/2026</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg" alt="Product Launch">
+            <div class="feed-media-tag">Nhân viên là người thử món đầu tiên</div>
+          </div>
+          <div class="feed-caption">
+            Trước khi bán cho khách, toàn bộ menu mới phải qua vòng “chấm điểm khó tính” của nhân viên nội bộ.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#F&amp;B</div>
+            <div class="feed-tag">#InternalTesting</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 289</span>
+              <span>💬 19</span>
+            </div>
+            <div class="feed-footer-right"><span>4.9/5★</span> điểm nội bộ</div>
+          </div>
+        </div>
+
+        <!-- POST 17 - ALBUM RETREAT NỘI BỘ -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=36" alt="GrowUp">
+              </div>
+              <div class="company-info">
+                <div class="company-name">GrowUp Consulting</div>
+                <div class="company-meta">
+                  <span>Consulting • HN/HCM</span>
+                  <span>JoyScore 84★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Leadership retreat</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Album retreat</div>
+              <span>6 ảnh</span>
+            </div>
+            <div class="feed-card-meta-right">Ninh Bình</div>
+          </div>
+          <div class="feed-media">
+            <div class="feed-media-multi">
+              <img src="https://images.pexels.com/photos/3184296/pexels-photo-3184296.jpeg" alt="Retreat 1">
+              <div class="feed-media-right-col">
+                <img src="https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg" alt="Retreat 2">
+                <img src="https://images.pexels.com/photos/3184395/pexels-photo-3184395.jpeg" alt="Retreat 3">
+              </div>
+            </div>
+            <div class="feed-media-tag">2 ngày 1 đêm để chỉ nói về chiến lược &amp; con người</div>
+          </div>
+          <div class="feed-caption">
+            Mỗi leader phải trả lời 1 câu: “Nếu team bạn rời đi đồng loạt, lý do lớn nhất sẽ là gì?”
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#Leadership</div>
+            <div class="feed-tag">#Retreat</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 312</span>
+              <span>💬 15</span>
+            </div>
+            <div class="feed-footer-right">Xem các câu trả lời ẩn danh →</div>
+          </div>
+        </div>
+
+        <!-- POST 18 - TEXT FEEDBACK ẨN DANH TỔNG HỢP -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=44" alt="DataNest">
+              </div>
+              <div class="company-info">
+                <div class="company-name">DataNest</div>
+                <div class="company-meta">
+                  <span>Data • HCM</span>
+                  <span>JoyScore 81★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Feedback ẩn danh</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Tổng hợp feedback</div>
+              <span>Q4/2025</span>
+            </div>
+            <div class="feed-card-meta-right">Công khai</div>
+          </div>
+          <div class="feed-caption">
+            Top 3 điều nhân viên muốn cải thiện: (1) Bớt họp dài, (2) Thêm budget đào tạo, (3) Minh bạch hơn về lộ trình lương. Ban lãnh đạo đã cam kết address từng mục trong 3 tháng tới.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#AnonymousFeedback</div>
+            <div class="feed-tag">#ActionPlan</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 401</span>
+              <span>💬 33</span>
+            </div>
+            <div class="feed-footer-right"><span>72%</span> nhân viên tham gia survey</div>
+          </div>
+        </div>
+
+        <!-- POST 19 - ẢNH BUỔI REVIEW LƯƠNG -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=8" alt="ClearPay">
+              </div>
+              <div class="company-info">
+                <div class="company-name">ClearPay</div>
+                <div class="company-meta">
+                  <span>Fintech • Hà Nội</span>
+                  <span>JoyScore 86★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill neon">Lương minh bạch</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Ảnh session</div>
+              <span>Review lương</span>
+            </div>
+            <div class="feed-card-meta-right">6 tháng/lần</div>
+          </div>
+          <div class="feed-media">
+            <img class="feed-media-image" src="https://images.pexels.com/photos/3184288/pexels-photo-3184288.jpeg" alt="Salary review">
+            <div class="feed-media-tag">Manager &amp; nhân viên cùng ngồi review lộ trình 12 tháng</div>
+          </div>
+          <div class="feed-caption">
+            100% nhân viên được biết rõ cách tính lương &amp; bonus, không có khoản “mập mờ”.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#SalaryReview</div>
+            <div class="feed-tag">#Transparency</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 378</span>
+              <span>💬 22</span>
+            </div>
+            <div class="feed-footer-right"><span>89%</span> hài lòng với buổi review gần nhất</div>
+          </div>
+        </div>
+
+        <!-- POST 20 - TEXT “MỘT NGÀY LÀM VIỆC” -->
+        <div class="feed-card">
+          <div class="feed-card-header">
+            <div class="feed-card-company">
+              <div class="company-avatar">
+                <img src="https://i.pravatar.cc/100?img=52" alt="JoyWork Demo">
+              </div>
+              <div class="company-info">
+                <div class="company-name">JoyWork Demo Company</div>
+                <div class="company-meta">
+                  <span>SME • Việt Nam</span>
+                  <span>JoyScore 0★</span>
+                </div>
+              </div>
+            </div>
+            <div class="pill">Demo cho SME</div>
+          </div>
+          <div class="feed-card-meta">
+            <div class="feed-card-meta-left">
+              <div class="pill type-pill">Mẫu post gợi ý</div>
+              <span>“Một ngày làm việc”</span>
+            </div>
+            <div class="feed-card-meta-right">Gợi ý từ JoyWork</div>
+          </div>
+          <div class="feed-caption">
+            Gợi ý cho các SME mới lên JoyWork: hãy thử kể lại <span class="text-strong">một ngày làm việc điển hình</span> của 1 vị trí chủ chốt (Sales, CS, Dev, Kế toán...). Càng cụ thể càng tốt: giờ bắt đầu, họp mấy lần, dùng tool gì, áp lực ra sao, support từ sếp &amp; team thế nào.
+          </div>
+          <div class="feed-tags">
+            <div class="feed-tag">#JoyWorkTemplate</div>
+            <div class="feed-tag">#ShowDontTell</div>
+          </div>
+          <div class="feed-footer">
+            <div class="feed-footer-left">
+              <span>❤️ 999+</span>
+              <span>💬 0</span>
+            </div>
+            <div class="feed-footer-right">Dùng mẫu này để bắt đầu kể câu chuyện của bạn</div>
+          </div>
+        </div>
+
+      </div>
     </div>
-
-    <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <span class="toast-icon">✓</span>
-        <span id="toastMessage">Success!</span>
-    </div>
-
-    <script>
-        // Initialize Culture Chart
-        function initCultureChart() {
-            const ctx = document.getElementById('cultureChart');
-            if (!ctx) return;
-
-            // Destroy existing chart if any
-            if (window.cultureChartInstance) {
-                window.cultureChartInstance.destroy();
-            }
-
-            window.cultureChartInstance = new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: [
-                        'Đào tạo & Phát triển',
-                        'Innovation',
-                        'Work-Life Balance',
-                        'Teamwork',
-                        'Leadership',
-                        'Transparency'
-                    ],
-                    datasets: [{
-                        label: 'Culture Score',
-                        data: [95, 92, 88, 90, 93, 89],
-                        backgroundColor: 'rgba(255, 107, 53, 0.2)',
-                        borderColor: 'rgba(255, 107, 53, 1)',
-                        borderWidth: 2,
-                        pointBackgroundColor: 'rgba(255, 107, 53, 1)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(255, 107, 53, 1)',
-                        pointRadius: 6,
-                        pointHoverRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        r: {
-                            angleLines: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            pointLabels: {
-                                color: '#cccccc',
-                                font: {
-                                    size: 12,
-                                    weight: 500
-                                }
-                            },
-                            ticks: {
-                                color: '#888888',
-                                backdropColor: 'transparent',
-                                font: {
-                                    size: 10
-                                }
-                            },
-                            suggestedMin: 0,
-                            suggestedMax: 100
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                            borderColor: 'rgba(255, 107, 53, 0.5)',
-                            borderWidth: 1,
-                            titleColor: '#fff',
-                            bodyColor: '#ccc',
-                            padding: 12,
-                            displayColors: false,
-                            callbacks: {
-                                label: function(context) {
-                                    return context.label + ': ' + context.parsed.r + '/100';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Tab Switching
-        function switchTab(tabName, btnElement) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.style.display = 'none';
-            });
-
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            // Show selected tab
-            const selectedTab = document.getElementById(tabName);
-            if (selectedTab) {
-                selectedTab.style.display = 'block';
-                
-                // Initialize chart if culture tab
-                if (tabName === 'culture') {
-                    setTimeout(initCultureChart, 100);
-                }
-            }
-
-            // Add active class to clicked button
-            if (btnElement) {
-                btnElement.classList.add('active');
-            }
-        }
-
-        // Action Functions
-        function followCompany() {
-            showToast('Đã follow John Academy! 🎯');
-        }
-
-        function watchVideo() {
-            showToast('Đang mở video giới thiệu... 🎬');
-        }
-
-        function contactHR() {
-            showToast('Đang kết nối với HR Team... 💬');
-        }
-
-        function playVideo(videoId) {
-            showToast('Đang phát video... ▶️');
-        }
-
-        function viewJob(jobId) {
-            showToast('Đang mở chi tiết công việc... 💼');
-        }
-
-        // Toast Notification
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            
-            toastMessage.textContent = message;
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // Initialize on load
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('fade-in');
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all section cards
-            document.querySelectorAll('.section-card').forEach(card => {
-                observer.observe(card);
-            });
-
-            // Initialize culture chart on first tab
-            setTimeout(initCultureChart, 500);
-
-            // Smooth scroll for navigation links
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    if (link.getAttribute('href').startsWith('#')) {
-                        e.preventDefault();
-                        const targetId = link.getAttribute('href').substring(1);
-                        const targetElement = document.getElementById(targetId);
-                        if (targetElement) {
-                            targetElement.scrollIntoView({ behavior: 'smooth' });
-                        }
-                    }
-                });
-            });
-
-            // Auto-animate metric bars
-            setTimeout(() => {
-                document.querySelectorAll('.metric-fill').forEach(bar => {
-                    const width = bar.style.width;
-                    bar.style.width = '0';
-                    setTimeout(() => {
-                        bar.style.width = width;
-                    }, 100);
-                });
-            }, 1000);
-
-            // Simulate real-time view counts
-            setInterval(() => {
-                document.querySelectorAll('.video-meta span:first-child').forEach(span => {
-                    if (Math.random() > 0.95) {
-                        const currentViews = parseInt(span.textContent.match(/[\d.]+/)[0]);
-                        const newViews = (currentViews + Math.random() * 0.5).toFixed(1);
-                        span.textContent = `👁 ${newViews}K views`;
-                    }
-                });
-            }, 5000);
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                // Close any open modals
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.style.display = 'none';
-                });
-            }
-        });
-    </script>
+  </div>
 </body>
 </html>
