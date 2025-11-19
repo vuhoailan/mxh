@@ -394,6 +394,155 @@
             font-weight: 500;
         }
 
+        /* Honest List - Bạn không nên làm việc */
+        .honest-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+
+        .honest-item {
+            display: flex;
+            gap: var(--space-6);
+            background: white;
+            border: 2px solid #FEE2E2;
+            border-left: 6px solid #EF4444;
+            border-radius: var(--radius-md);
+            padding: var(--space-8);
+            transition: all 0.3s;
+        }
+
+        .honest-item:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateX(4px);
+        }
+
+        .honest-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .honest-content h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: var(--space-5);
+            color: var(--color-dark);
+        }
+
+        .honest-tradeoff,
+        .honest-why,
+        .honest-fit {
+            margin-bottom: var(--space-4);
+            padding: var(--space-4);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .honest-tradeoff {
+            background: #FEF2F2;
+            border-left: 3px solid #EF4444;
+        }
+
+        .honest-why {
+            background: #FFF7ED;
+            border-left: 3px solid #F97316;
+        }
+
+        .honest-fit {
+            background: #F0FDF4;
+            border-left: 3px solid #10B981;
+        }
+
+        .honest-tradeoff strong,
+        .honest-why strong,
+        .honest-fit strong {
+            display: block;
+            margin-bottom: var(--space-2);
+            font-weight: 700;
+        }
+
+        .why-honest-box {
+            background: #EFF6FF;
+            border: 2px solid var(--color-primary);
+            border-radius: var(--radius-md);
+            padding: var(--space-6);
+            margin-top: var(--space-8);
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--color-secondary);
+        }
+
+        .why-honest-box strong {
+            color: var(--color-primary);
+            display: block;
+            margin-bottom: var(--space-3);
+            font-size: 16px;
+        }
+
+        /* Problem List */
+        .problem-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+
+        .problem-item {
+            background: white;
+            border: 2px solid #FEF3C7;
+            border-left: 6px solid #F59E0B;
+            border-radius: var(--radius-md);
+            padding: var(--space-8);
+        }
+
+        .problem-score {
+            display: inline-block;
+            background: #F59E0B;
+            color: white;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: var(--space-4);
+        }
+
+        .problem-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: var(--space-5);
+            color: var(--color-dark);
+        }
+
+        .problem-detail p {
+            margin-bottom: var(--space-4);
+            line-height: 1.7;
+        }
+
+        .problem-detail ul {
+            margin-left: var(--space-6);
+            margin-top: var(--space-3);
+            margin-bottom: var(--space-5);
+        }
+
+        .problem-detail li {
+            margin-bottom: var(--space-2);
+            line-height: 1.7;
+        }
+
+        .problem-meta {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-4);
+            margin-top: var(--space-5);
+            padding-top: var(--space-5);
+            border-top: 1px solid var(--color-border);
+            font-size: 14px;
+            color: var(--color-text-light);
+        }
+
         /* Tags */
         .tags-section {
             padding: var(--space-6) 0;
@@ -1842,6 +1991,34 @@
                 font-size: 14px;
             }
             
+            /* Honest List Mobile */
+            .honest-item {
+                flex-direction: column;
+                gap: var(--space-4);
+                padding: var(--space-6);
+            }
+            
+            .honest-icon {
+                font-size: 28px;
+            }
+            
+            .honest-content h3 {
+                font-size: 18px;
+            }
+            
+            /* Problem List Mobile */
+            .problem-item {
+                padding: var(--space-6);
+            }
+            
+            .problem-title {
+                font-size: 18px;
+            }
+            
+            .problem-meta {
+                grid-template-columns: 1fr;
+            }
+            
             /* Gallery Mobile */
             .gallery {
                 grid-template-columns: 1fr;
@@ -2129,6 +2306,100 @@
         
         <!-- TAB: VĂN HÓA DOANH NGHIỆP -->
         <div class="tab-panel active" id="tab-culture">
+
+            <!-- BẠN KHÔNG NÊN LÀM VIỆC Ở ĐÂY NẾU... -->
+            <div class="content-section">
+                <div class="section-label">THẲNG THẮN TRƯỚC TIÊN</div>
+                <h2 class="section-title">Bạn KHÔNG nên làm việc ở đây nếu...</h2>
+                <p class="section-subtitle">Chúng tôi không phải cho tất cả mọi người. Dưới đây là những điều thẳng thắn để bạn không lãng phí thời gian của cả hai bên.</p>
+                
+                <div class="honest-list">
+                    <div class="honest-item">
+                        <div class="honest-icon">❌</div>
+                        <div class="honest-content">
+                            <h3>Bạn muốn cân bằng hoàn hảo MÀ ĐỒNG THỜI thăng tiến nhanh</h3>
+                            <div class="honest-tradeoff">
+                                <strong>Đánh đổi:</strong> Chúng tôi chọn tăng trưởng bền vững. Trung bình chỉ 2 giờ tăng ca mỗi tháng, không làm cuối tuần, nhưng thăng chức trung bình mất 1.8 năm - chậm hơn startup điển hình 30-40%.
+                            </div>
+                            <div class="honest-why">
+                                <strong>Lý do:</strong> Chúng tôi tin năng suất bền vững quan trọng hơn tốc độ. Nếu bạn muốn lên cấp cao sau 1 năm, đây không phải nơi cho bạn.
+                            </div>
+                            <div class="honest-fit">
+                                <strong>Ai nên đến:</strong> Người chọn chạy marathon hơn chạy nước rút. Xây dựng kỹ năng vững chắc hơn danh hiệu nhanh chóng.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="honest-item">
+                        <div class="honest-icon">❌</div>
+                        <div class="honest-content">
+                            <h3>Bạn thích quy trình rõ ràng và không thích tình huống mơ hồ</h3>
+                            <div class="honest-tradeoff">
+                                <strong>Đánh đổi:</strong> Chúng tôi đang ở giai đoạn 200 người, nhiều thứ đang xây dựng. Một tuần có thể có 3 ưu tiên thay đổi vì thị trường biến động. Điểm đánh giá hệ thống đào tạo nhân viên mới: 3.2/5.
+                            </div>
+                            <div class="honest-why">
+                                <strong>Lý do:</strong> Chúng tôi thiên về hành động hơn kế hoạch hoàn hảo. Điều này có nghĩa đôi khi lộn xộn, cần tự tìm ra hướng đi.
+                            </div>
+                            <div class="honest-fit">
+                                <strong>Ai nên đến:</strong> Người thoải mái với việc "vừa bay vừa lắp ráp máy bay". Thích tự chủ hơn được chỉ dẫn từng bước một.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="honest-item">
+                        <div class="honest-icon">❌</div>
+                        <div class="honest-content">
+                            <h3>Bạn muốn làm việc từ xa 100% hoặc địa điểm linh hoạt</h3>
+                            <div class="honest-tradeoff">
+                                <strong>Đánh đổi:</strong> Chúng tôi yêu cầu tối thiểu 3 ngày mỗi tuần tại văn phòng. Chỉ cho phép làm xa 2 ngày mỗi tuần + 2 tuần mỗi năm làm xa hoàn toàn.
+                            </div>
+                            <div class="honest-why">
+                                <strong>Lý do:</strong> Số liệu của chúng tôi cho thấy: cộng tác nhóm trực tiếp hiệu quả hơn 40%, đào tạo nhân viên mới nhanh hơn 3 tuần, và kỹ sư mới học nhanh hơn 60% khi có người cao cấp ngồi cạnh.
+                            </div>
+                            <div class="honest-fit">
+                                <strong>Ai nên đến:</strong> Người thích môi trường văn phòng, thích học trực tiếp từ đồng nghiệp, sống ở Hà Nội hoặc TP.HCM.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="honest-item">
+                        <div class="honest-icon">❌</div>
+                        <div class="honest-content">
+                            <h3>Bạn muốn mức lương cao nhất thị trường</h3>
+                            <div class="honest-tradeoff">
+                                <strong>Đánh đổi:</strong> Chúng tôi trả mức top 10%, không phải top 1%. Kỹ sư cấp cao: 50-80 triệu gộp (các công ty công nghệ lớn tại Việt Nam trả 100-150 triệu).
+                            </div>
+                            <div class="honest-why">
+                                <strong>Lý do:</strong> Chúng tôi không thể cạnh tranh về tiền với Google, Shopee, Grab. Nhưng chúng tôi CÓ THỂ cạnh tranh về: tác động (sản phẩm bạn xây ảnh hưởng trực tiếp), phát triển (bạn có thể dẫn dự án lớn sau 1 năm), và văn hóa (không chính trị công sở, không vòng vo).
+                            </div>
+                            <div class="honest-fit">
+                                <strong>Ai nên đến:</strong> Người tối ưu cho gói tổng thể (tác động + phát triển + văn hóa + lương tốt) hơn chỉ tối đa hóa lương.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="honest-item">
+                        <div class="honest-icon">❌</div>
+                        <div class="honest-content">
+                            <h3>Bạn muốn làm việc một mình và không thích họp hành</h3>
+                            <div class="honest-tradeoff">
+                                <strong>Đánh đổi:</strong> Trung bình 12 cuộc họp mỗi tuần (2-3 cuộc mỗi ngày). Chúng tôi tin cộng tác nhóm quan trọng hơn năng suất cá nhân.
+                            </div>
+                            <div class="honest-why">
+                                <strong>Lý do:</strong> Sản phẩm tốt đến từ nhóm tốt, không phải những người hùng cá nhân. Chúng tôi cần: họp nhanh hàng ngày (15 phút), họp riêng một-đối-một (30 phút mỗi tuần), đánh giá thiết kế, đánh giá mã nguồn.
+                            </div>
+                            <div class="honest-fit">
+                                <strong>Ai nên đến:</strong> Người thích làm việc nhóm, thích chia sẻ và nhận phản hồi, thoải mái với việc giải thích suy nghĩ.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="why-honest-box">
+                    <strong>Tại sao chúng tôi viết phần này?</strong><br>
+                    Mỗi năm, 20-30% người nghỉ việc là vì không hợp văn hóa. Nếu chúng tôi thẳng thắn từ đầu, cả bạn và chúng tôi đều tiết kiệm thời gian và tâm lực. Thành thật ở đầu tạo niềm tin sau này.
+                </div>
+            </div>
 
             <!-- CAM KẾT ĐÃ XÁC THỰC -->
             <div class="content-section">
@@ -2855,6 +3126,133 @@
                 </div>
             </div>
 
+            <!-- TRIẾT LÝ LƯƠNG THƯỞNG -->
+            <div class="content-section">
+                <div class="section-label">MINH BẠCH VỀ LƯƠNG</div>
+                <h2 class="section-title">Triết lý lương thưởng - Toàn bộ câu chuyện</h2>
+                <p class="section-subtitle">Không có gì bí mật. Đây là cách chúng tôi xác định lương, tại sao, và những gì chúng tôi không làm.</p>
+                
+                <div style="background: var(--color-bg); border-radius: var(--radius-md); padding: var(--space-10); margin-bottom: var(--space-8);">
+                    <h3 style="margin-bottom: var(--space-6);">1. Khung lương thực tế (Gộp, đơn vị: triệu đồng/tháng)</h3>
+                    
+                    <table style="width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm);">
+                        <thead>
+                            <tr style="background: var(--color-primary); color: white;">
+                                <th style="padding: var(--space-4); text-align: left; font-weight: 600;">Cấp bậc</th>
+                                <th style="padding: var(--space-4); text-align: left; font-weight: 600;">Mức lương</th>
+                                <th style="padding: var(--space-4); text-align: left; font-weight: 600;">Điều kiện</th>
+                                <th style="padding: var(--space-4); text-align: left; font-weight: 600;">So với thị trường</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);"><strong>Sơ cấp</strong></td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">15-25 triệu</td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">0-2 năm kinh nghiệm</td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">Top 15% (TB: 12-18 triệu)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);"><strong>Trung cấp</strong></td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">30-50 triệu</td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">2-4 năm kinh nghiệm</td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">Top 10% (TB: 20-35 triệu)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);"><strong>Cấp cao</strong></td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">50-80 triệu</td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">4-7 năm kinh nghiệm</td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">Top 10% (TB: 35-60 triệu)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);"><strong>Chuyên gia</strong></td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">80-120 triệu</td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">7+ năm, tác động rộng</td>
+                                <td style="padding: var(--space-4); border-bottom: 1px solid var(--color-border);">Top 8% (TB: 60-90 triệu)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: var(--space-4);"><strong>Quản lý</strong></td>
+                                <td style="padding: var(--space-4);">70-140 triệu</td>
+                                <td style="padding: var(--space-4);">Dẫn dắt 5-20 người</td>
+                                <td style="padding: var(--space-4);">Top 10%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="background: #FEF3C7; border-left: 4px solid #F59E0B; padding: var(--space-5); border-radius: var(--radius-sm); margin-top: var(--space-6);">
+                        <strong style="color: #92400E;">Lưu ý:</strong> Đây là lương gộp (trước thuế). Lương ròng (nhận về) khoảng 80-85% tùy thuế thu nhập cá nhân. Chưa bao gồm thưởng và cổ phiếu.
+                    </div>
+                </div>
+
+                <div style="background: var(--color-bg); border-radius: var(--radius-md); padding: var(--space-10); margin-bottom: var(--space-8);">
+                    <h3 style="margin-bottom: var(--space-6);">2. Công thức xác định lương</h3>
+                    <div style="background: white; padding: var(--space-6); border-radius: var(--radius-sm); font-family: 'Courier New', monospace; font-size: 14px; line-height: 2; color: var(--color-secondary);">
+├─ 50% Tham chiếu thị trường (so sánh với top 10% công ty công nghệ VN)<br>
+├─ 30% Tác động và Phạm vi công việc<br>
+│   ├─ Số người ảnh hưởng trực tiếp<br>
+│   ├─ Độ phức tạp kỹ thuật/kinh doanh<br>
+│   └─ Tự chủ ra quyết định<br>
+├─ 20% Thâm niên và Gắn bó<br>
+    ├─ Mỗi năm: Tăng lương cơ bản 5-8%<br>
+    ├─ Sau 3 năm: Quyền chọn mua cổ phần<br>
+    └─ Sau 5 năm: Thưởng giữ chân
+                    </div>
+                </div>
+
+                <div style="background: var(--color-bg); border-radius: var(--radius-md); padding: var(--space-10); margin-bottom: var(--space-8);">
+                    <h3 style="margin-bottom: var(--space-6);">3. Những gì chúng tôi KHÔNG làm</h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: var(--space-5);">
+                        <div style="background: white; border: 2px solid #FEE2E2; border-radius: var(--radius-md); padding: var(--space-6);">
+                            <h4 style="color: #EF4444; margin-bottom: var(--space-3);">❌ Không thương lượng lương</h4>
+                            <p style="margin-bottom: var(--space-3);"><strong>Lý do:</strong> Thương lượng thưởng cho người hung hăng và kỹ năng giao tiếp, không phải năng lực kỹ thuật. Người hướng nội hoặc không giỏi thương lượng sẽ bị trả thấp hơn dù năng lực ngang nhau.</p>
+                            <p style="font-style: italic; color: var(--color-text-light);">Thay vào đó: Chúng tôi đưa mức công bằng từ đầu dựa trên tiêu chí rõ ràng. Không chơi trò gì cả.</p>
+                        </div>
+
+                        <div style="background: white; border: 2px solid #FEE2E2; border-radius: var(--radius-md); padding: var(--space-6);">
+                            <h4 style="color: #EF4444; margin-bottom: var(--space-3);">❌ Không cho quyền chọn mua cổ phần tất cả mọi người</h4>
+                            <p style="margin-bottom: var(--space-3);"><strong>Lý do:</strong> Chúng tôi thử quyền chọn mua cổ phần năm 2022. Kết quả: 85% nhân viên không hiểu cách nó hoạt động, cảm thấy bối rối hơn có động lực. Đối với giai đoạn doanh nghiệp vừa và nhỏ, cổ phần quá trừu tượng.</p>
+                            <p style="font-style: italic; color: var(--color-text-light);">Thay vào đó: Thưởng tiền mặt rõ ràng mỗi quý dựa trên lợi nhuận công ty. Nếu công ty lãi 1 tỷ, mỗi người nhận thêm khoảng 5-8 triệu. Đơn giản, minh bạch.</p>
+                        </div>
+
+                        <div style="background: white; border: 2px solid #FEE2E2; border-radius: var(--radius-md); padding: var(--space-6);">
+                            <h4 style="color: #EF4444; margin-bottom: var(--space-3);">❌ Không có "nghỉ phép không giới hạn"</h4>
+                            <p style="margin-bottom: var(--space-3);"><strong>Lý do:</strong> Số liệu từ các công ty có nghỉ phép không giới hạn cho thấy: nhân viên nghỉ ÍT HƠN (trung bình 12 ngày mỗi năm so với 18 ngày khi có số ngày cố định). Mọi người sợ bị đánh giá là "lười biếng".</p>
+                            <p style="font-style: italic; color: var(--color-text-light);">Thay vào đó: 18 ngày phép mỗi năm + 12 ngày lễ. Rõ ràng và bắt buộc. Quản lý yêu cầu nhân viên phải nghỉ hết.</p>
+                        </div>
+
+                        <div style="background: white; border: 2px solid #FEE2E2; border-radius: var(--radius-md); padding: var(--space-6);">
+                            <h4 style="color: #EF4444; margin-bottom: var(--space-3);">❌ Không có thưởng hiệu suất cá nhân</h4>
+                            <p style="margin-bottom: var(--space-3);"><strong>Lý do:</strong> Thưởng cá nhân tạo cạnh tranh thay vì cộng tác. Mọi người sẽ tối ưu cho chỉ số của mình, không phải tổng thể nhóm.</p>
+                            <p style="font-style: italic; color: var(--color-text-light);">Thay vào đó: Chia sẻ lợi nhuận theo nhóm. Nếu nhóm làm tốt → cả nhóm được thưởng. Khuyến khích giúp đỡ lẫn nhau.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #FEF3C7; border-left: 4px solid #F59E0B; padding: var(--space-8); border-radius: var(--radius-md); margin-bottom: var(--space-8);">
+                    <h4 style="color: #92400E; margin-bottom: var(--space-4); font-size: 18px;">Đánh đổi của hệ thống này</h4>
+                    
+                    <strong style="display: block; margin-bottom: var(--space-3);">Chúng tôi trả top 10%, không phải top 1%</strong>
+                    
+                    <p style="margin-bottom: var(--space-4); line-height: 1.7;"><strong>Có nghĩa là:</strong><br>
+                    • Google VN trả Kỹ sư Cấp cao: 100-150 triệu → Chúng tôi: 50-80 triệu<br>
+                    • Shopee trả Chuyên gia: 150-200 triệu → Chúng tôi: 80-120 triệu<br>
+                    • Grab trả Quản lý Kỹ thuật: 200 triệu+ → Chúng tôi: 100-140 triệu</p>
+                    
+                    <p style="line-height: 1.7;"><strong>Tại sao chúng tôi chấp nhận điều này:</strong><br>
+                    Chúng tôi không thể cạnh tranh về tiền. Nhưng chúng tôi cạnh tranh về:<br>
+                    • <strong>Tác động:</strong> Ở công ty lớn bạn làm 1 tính năng nhỏ của 1 sản phẩm khổng lồ. Ở đây bạn xây dựng toàn bộ sản phẩm ảnh hưởng hàng nghìn doanh nghiệp vừa và nhỏ<br>
+                    • <strong>Phát triển:</strong> Ở công ty lớn mất 3-5 năm lên cấp cao. Ở đây trung bình 2-3 năm vì phạm vi lớn hơn<br>
+                    • <strong>Văn hóa:</strong> Không chính trị, không quan liêu, không cần 10 lớp phê duyệt</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, var(--color-primary) 0%, #1D3F68 100%); color: white; padding: var(--space-10); border-radius: var(--radius-md); text-align: center;">
+                    <blockquote style="font-size: 20px; font-weight: 600; line-height: 1.6; margin-bottom: var(--space-4);">
+                        "Lương không phải lý do duy nhất để làm việc. Nhưng nó phải đủ công bằng để bạn không phải lo lắng về tiền mỗi ngày. Đó là tại sao chúng tôi trả top 10% và minh bạch hoàn toàn."
+                    </blockquote>
+                    <div style="opacity: 0.9; font-size: 15px;">— Trần Minh Quân, Tổng giám đốc & Người sáng lập</div>
+                </div>
+            </div>
+
             <!-- PHÚC LỢI -->
             <div class="content-section">
                 <div class="section-label">PHÚC LỢI & PHONG CÁCH</div>
@@ -3007,6 +3405,107 @@
                         </div>
                         <div class="faq-answer">Theo khảo sát gần nhất: (1) Văn phòng Hà Nội chưa có khu vui chơi giải trí đủ lớn như TP.HCM, (2) Một số nhân viên mong muốn làm việc từ xa linh hoạt hơn (hiện chỉ 2 ngày làm việc từ xa/tháng), (3) Quy trình nhập môn chưa mượt mà. Chúng tôi đang làm việc để cải thiện từng điểm.</div>
                     </div>
+                </div>
+            </div>
+
+            <!-- SỰ THẬT KHÓ NGHE -->
+            <div class="content-section">
+                <div class="section-label">ĐANG CỐ GẮNG SỬA</div>
+                <h2 class="section-title">Sự thật khó nghe - Những gì chúng tôi đang cố sửa</h2>
+                <p class="section-subtitle">Hoàn hảo là giả. Tiến bộ mới là thật. Đây là những vấn đề hiện tại và kế hoạch để khắc phục.</p>
+
+                <div style="background: #FEF3C7; border-left: 4px solid #F59E0B; padding: var(--space-6); border-radius: var(--radius-md); margin-bottom: var(--space-8);">
+                    <strong style="color: #92400E; display: block; margin-bottom: var(--space-3);">Tại sao công khai những vấn đề này?</strong>
+                    <span style="color: #78350F;">Vì minh bạch. Nếu bạn tham gia, bạn sẽ thấy những vấn đề này dù sao. Tốt hơn là biết trước và quyết định xem bạn có muốn là phần của giải pháp không.</span>
+                </div>
+
+                <div class="problem-list">
+                    <div class="problem-item">
+                        <div class="problem-score">Điểm: 3.2/5</div>
+                        <h3 class="problem-title">1. Hệ thống đào tạo nhân viên mới vẫn còn lộn xộn</h3>
+                        <div class="problem-detail">
+                            <p><strong>Vấn đề:</strong> Người đồng hành không được huấn luyện đủ. Nhân viên mới bối rối 2 tuần đầu về quy trình, công cụ, hỏi ai.</p>
+                            <p><strong>Tác động:</strong> Thời gian đến năng suất: 6 tuần (mục tiêu: 4 tuần). Điểm hài lòng của nhân viên mới: 3.2/5.</p>
+                            <p><strong>Nguyên nhân gốc rễ:</strong> Tăng trưởng nhanh (từ 120 → 200 người trong 10 tháng), quy trình đào tạo không theo kịp.</p>
+                            <p><strong>Kế hoạch:</strong></p>
+                            <ul>
+                                <li>Quý 4/2024: Xây dựng sổ tay đào tạo toàn diện</li>
+                                <li>Quý 1/2025: Huấn luyện 20 người đồng hành đúng cách với chứng chỉ</li>
+                                <li>Quý 1/2025: Triển khai bảng điều khiển theo dõi tiến độ đào tạo</li>
+                            </ul>
+                        </div>
+                        <div class="problem-meta">
+                            <div><strong>Người chịu trách nhiệm:</strong> Nguyễn Thu Hà - Trưởng phòng Nhân sự</div>
+                            <div><strong>Mục tiêu sửa:</strong> Điểm 4.2/5 trước Quý 2/2025</div>
+                        </div>
+                    </div>
+
+                    <div class="problem-item">
+                        <div class="problem-score">Điểm: 2.8/5</div>
+                        <h3 class="problem-title">2. Văn hóa họp hành đang quay trở lại</h3>
+                        <div class="problem-detail">
+                            <p><strong>Vấn đề:</strong> Số cuộc họp trung bình mỗi tuần tăng từ 8 → 12 trong 6 tháng qua. Thời gian làm việc sâu giảm.</p>
+                            <p><strong>Tác động:</strong> Kỹ sư báo cáo cảm thấy kém năng suất hơn. Khảo sát: 65% mọi người nói "quá nhiều cuộc họp".</p>
+                            <p><strong>Nguyên nhân gốc rễ:</strong> Công ty lớn dần → nhiều bên liên quan hơn → nhiều cuộc họp "thống nhất" hơn. Không có kỷ luật.</p>
+                            <p><strong>Kế hoạch:</strong></p>
+                            <ul>
+                                <li>Ngay lập tức: Quy định "Thứ Tư không họp"</li>
+                                <li>Hàng tháng: Mỗi nhóm phải rà soát cuộc họp, loại bỏ 20%</li>
+                                <li>Hàng quý: Tổng giám đốc xem xét chỉ số số giờ họp</li>
+                                <li>Công cụ: Tự động từ chối cuộc họp không có chương trình</li>
+                            </ul>
+                        </div>
+                        <div class="problem-meta">
+                            <div><strong>Người chịu trách nhiệm:</strong> Nguyễn Thị Hà - Giám đốc điều hành</div>
+                            <div><strong>Mục tiêu sửa:</strong> Dưới 10 cuộc họp/tuần trước Quý 1/2025</div>
+                        </div>
+                    </div>
+
+                    <div class="problem-item">
+                        <div class="problem-score">Điểm: 3.5/5</div>
+                        <h3 class="problem-title">3. Văn phòng Hà Nội còn "buồn"</h3>
+                        <div class="problem-detail">
+                            <p><strong>Vấn đề:</strong> Văn phòng HCM có phòng game, khu nghỉ trên sân thượng. Văn phòng HN không có → Người HN cảm thấy kém sang hơn.</p>
+                            <p><strong>Tác động:</strong> Mức hài lòng với không gian làm việc: HCM 4.2/5, HN 3.5/5. Một số người HN yêu cầu chuyển về HCM.</p>
+                            <p><strong>Nguyên nhân gốc rễ:</strong> Văn phòng HCM mới cải tạo năm 2023. Văn phòng HN thiết lập từ 2019, chưa nâng cấp.</p>
+                            <p><strong>Kế hoạch:</strong></p>
+                            <ul>
+                                <li>Quý 4/2024: Khảo sát nhóm HN về ưu tiên</li>
+                                <li>Quý 1/2025: Cải tạo khu nghỉ (Ngân sách: 200 triệu)</li>
+                                <li>Quý 1/2025: Thêm phòng game, phòng yên tĩnh, cà phê tốt hơn</li>
+                            </ul>
+                        </div>
+                        <div class="problem-meta">
+                            <div><strong>Người chịu trách nhiệm:</strong> Đỗ Tuấn Kiệt - Giám đốc tài chính (Ngân sách) + Cơ sở vật chất</div>
+                            <div><strong>Mục tiêu sửa:</strong> Điểm 4.0/5 trước Quý 2/2025</div>
+                        </div>
+                    </div>
+
+                    <div class="problem-item">
+                        <div class="problem-score">Điểm: 3.0/5</div>
+                        <h3 class="problem-title">4. Nền thang sự nghiệp chưa rõ ràng</h3>
+                        <div class="problem-detail">
+                            <p><strong>Vấn đề:</strong> Tiêu chí để lên cấp cao, chuyên gia... chưa đủ rõ. Một số quyết định thăng chức có vẻ tùy ý.</p>
+                            <p><strong>Tác động:</strong> Khảo sát: 45% mọi người không hiểu rõ "tôi cần làm gì để lên cấp". Tạo sự thất vọng.</p>
+                            <p><strong>Nguyên nhân gốc rễ:</strong> Tăng trưởng nhanh, chưa đầu tư đủ thời gian vào việc chính thức hóa khung sự nghiệp.</p>
+                            <p><strong>Kế hoạch:</strong></p>
+                            <ul>
+                                <li>Quý 4/2024: Làm việc với 10 người đóng góp cá nhân cấp cao để tạo tiêu chí</li>
+                                <li>Quý 1/2025: Công bố nền thang sự nghiệp với ví dụ</li>
+                                <li>Quý 1/2025: Huấn luyện tất cả quản lý về hiệu chuẩn</li>
+                                <li>Liên tục: Cuộc họp hiệu chuẩn hàng quý</li>
+                            </ul>
+                        </div>
+                        <div class="problem-meta">
+                            <div><strong>Người chịu trách nhiệm:</strong> Vũ Phương Anh - Trưởng phòng Sản phẩm + Trưởng phòng Nhân sự</div>
+                            <div><strong>Mục tiêu sửa:</strong> Điểm 4.0/5 trước Quý 2/2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #D1FAE5; border-left: 4px solid #10B981; padding: var(--space-6); border-radius: var(--radius-md); margin-top: var(--space-8);">
+                    <strong style="color: #065F46; display: block; margin-bottom: var(--space-3);">Theo dõi tiến độ:</strong>
+                    <span style="color: #047857;">Chúng tôi cập nhật phần này mỗi tháng. Cập nhật cuối: 15/11/2024. Nếu bạn tham gia và thấy những vấn đề này không được sửa theo thời gian → Báo ngay với Tổng giám đốc.</span>
                 </div>
             </div>
 
