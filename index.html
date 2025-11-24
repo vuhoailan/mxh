@@ -67,111 +67,108 @@
             padding: 0 var(--sp-6);
         }
 
-        /* ===== HERO COVER - Larger & More Impactful ===== */
+        /* ===== HERO COVER - Facebook Style ===== */
         .hero-cover {
             position: relative;
-            height: 380px;
-            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+            height: 400px;
             overflow: hidden;
+            background: var(--color-bg);
         }
 
         .hero-bg {
-            position: absolute;
-            inset: 0;
+            width: 100%;
+            height: 100%;
             background-image: url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&h=600&fit=crop&q=80');
             background-size: cover;
             background-position: center;
         }
 
-        .hero-bg::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(41, 88, 146, 0.9) 0%, rgba(29, 63, 104, 0.85) 100%);
+        /* ===== COMPANY INFO - Dưới cover ===== */
+        .company-header {
+            background: white;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--sp-5);
         }
 
-        .hero-content {
-            position: relative;
-            max-width: 1300px;
-            margin: 0 auto;
-            padding: 0 var(--sp-6);
-            height: 100%;
+        .company-header-content {
             display: flex;
-            align-items: center;
-            gap: var(--sp-8);
+            gap: var(--sp-6);
+            align-items: flex-end;
+            margin-top: -80px;
+            margin-bottom: var(--sp-5);
         }
 
         .company-logo {
-            width: 130px;
-            height: 130px;
+            width: 160px;
+            height: 160px;
             background: white;
             border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 42px;
+            font-size: 48px;
             font-weight: 800;
             color: var(--color-primary);
             flex-shrink: 0;
             box-shadow: var(--shadow-xl);
+            border: 5px solid white;
         }
 
-        .hero-info {
+        .company-info {
             flex: 1;
-            color: white;
+            padding-top: var(--sp-8);
         }
 
         .verified-badge {
             display: inline-flex;
             align-items: center;
             gap: var(--sp-2);
-            background: rgba(16, 185, 129, 0.25);
+            background: rgba(16, 185, 129, 0.1);
             padding: var(--sp-2) var(--sp-4);
             border-radius: var(--radius-full);
             font-size: 12px;
             font-weight: 600;
-            margin-bottom: var(--sp-3);
-            color: #34D399;
-            backdrop-filter: blur(10px);
+            margin-bottom: var(--sp-2);
+            color: var(--color-success);
         }
 
         .company-name {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 800;
             line-height: 1.2;
-            margin-bottom: var(--sp-3);
-            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            margin-bottom: var(--sp-2);
+            color: var(--color-dark);
         }
 
         .company-meta {
             font-size: 14px;
-            opacity: 0.95;
+            color: var(--color-secondary);
             display: flex;
-            gap: var(--sp-5);
+            gap: var(--sp-4);
             flex-wrap: wrap;
         }
 
-        .hero-stats {
+        .company-stats {
             display: flex;
-            gap: var(--sp-6);
-            margin-top: var(--sp-6);
-            padding-top: var(--sp-6);
-            border-top: 1px solid rgba(255,255,255,0.2);
+            gap: var(--sp-10);
+            padding-top: var(--sp-5);
+            border-top: 1px solid var(--color-border);
         }
 
-        .hero-stat {
+        .stat-item {
             text-align: center;
         }
 
-        .hero-stat-num {
-            font-size: 32px;
+        .stat-num {
+            font-size: 28px;
             font-weight: 800;
+            color: var(--color-primary);
             line-height: 1;
         }
 
-        .hero-stat-label {
-            font-size: 12px;
-            opacity: 0.8;
+        .stat-label {
+            font-size: 13px;
+            color: var(--color-secondary);
             margin-top: var(--sp-1);
         }
 
@@ -1516,10 +1513,34 @@
         }
 
         @media (max-width: 768px) {
-            .hero-cover { height: 320px; }
-            .company-logo { width: 90px; height: 90px; font-size: 32px; }
-            .company-name { font-size: 24px; }
-            .hero-stats { flex-wrap: wrap; gap: var(--sp-4); }
+            .hero-cover { height: 200px; }
+            
+            .company-header-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-top: -60px;
+            }
+            
+            .company-logo {
+                width: 120px;
+                height: 120px;
+                font-size: 36px;
+            }
+            
+            .company-name {
+                font-size: 24px;
+            }
+            
+            .company-meta {
+                justify-content: center;
+            }
+            
+            .company-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: var(--sp-6);
+            }
             
             .section { padding: var(--sp-5); }
             .section-title { font-size: 22px; }
@@ -1547,10 +1568,21 @@
         }
 
         @media (max-width: 480px) {
-            .hero-cover { height: 280px; }
-            .hero-content { flex-direction: column; text-align: center; }
-            .company-meta { justify-content: center; }
-            .hero-stats { justify-content: center; }
+            .hero-cover { height: 180px; }
+            
+            .company-logo {
+                width: 100px;
+                height: 100px;
+                font-size: 32px;
+            }
+            
+            .company-stats {
+                gap: var(--sp-4);
+            }
+            
+            .stat-num {
+                font-size: 24px;
+            }
             
             .day-journey { grid-template-columns: 1fr; }
             .week-schedule { grid-template-columns: repeat(2, 1fr); }
@@ -1560,35 +1592,41 @@
 </head>
 <body>
 
-    <!-- HERO COVER -->
+    <!-- HERO COVER - Facebook Style -->
     <div class="hero-cover">
         <div class="hero-bg"></div>
-        <div class="hero-content">
-            <div class="company-logo">STV</div>
-            <div class="hero-info">
-                <div class="verified-badge">
-                    <span>✓</span>
-                    <span>Đã xác minh</span>
+    </div>
+
+    <!-- COMPANY INFO - Dưới cover -->
+    <div class="company-header">
+        <div class="container">
+            <div class="company-header-content">
+                <div class="company-logo">STV</div>
+                <div class="company-info">
+                    <div class="verified-badge">
+                        <span>✓</span>
+                        <span>Đã xác minh</span>
+                    </div>
+                    <h1 class="company-name">Công ty TNHH Phần Mềm Sáng Tạo Việt</h1>
+                    <div class="company-meta">
+                        <span>🏢 Công nghệ / Phần mềm</span>
+                        <span>📍 Hà Nội</span>
+                        <span>📅 Thành lập 2018</span>
+                    </div>
                 </div>
-                <h1 class="company-name">Công ty TNHH Phần Mềm Sáng Tạo Việt</h1>
-                <div class="company-meta">
-                    <span>🏢 Công nghệ / Phần mềm</span>
-                    <span>📍 Hà Nội</span>
-                    <span>📅 Thành lập 2018</span>
+            </div>
+            <div class="company-stats">
+                <div class="stat-item">
+                    <div class="stat-num">200+</div>
+                    <div class="stat-label">Nhân viên</div>
                 </div>
-                <div class="hero-stats">
-                    <div class="hero-stat">
-                        <div class="hero-stat-num">200+</div>
-                        <div class="hero-stat-label">Nhân viên</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-num">5,000+</div>
-                        <div class="hero-stat-label">Khách hàng</div>
-                    </div>
-                    <div class="hero-stat">
-                        <div class="hero-stat-num">97%</div>
-                        <div class="hero-stat-label">Hài lòng</div>
-                    </div>
+                <div class="stat-item">
+                    <div class="stat-num">5,000+</div>
+                    <div class="stat-label">Khách hàng</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">97%</div>
+                    <div class="stat-label">Hài lòng</div>
                 </div>
             </div>
         </div>
